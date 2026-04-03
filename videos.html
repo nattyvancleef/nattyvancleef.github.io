@@ -11,7 +11,7 @@
       color: #1a1a1a;
     }
 
-    /* Return arrow styled as a keyhole with blur effect */
+    /* Return arrow styled as a keyhole with blur effect, now displaying "NVC" */
     .return-arrow {
       position: fixed;
       top: 20px;
@@ -27,12 +27,18 @@
       z-index: 10;
     }
 
+    /* Show "NVC" text on arrow button */
+    .return-arrow::after {
+      content: "NVC";
+      font-weight: bold;
+    }
+
     .return-arrow:hover {
       filter: blur(1px);
       background: rgba(255, 255, 255, 0.3);
     }
 
-    /* New toggle arrow for hero video overlay */
+    /* Toggle button for hero video overlay */
     .toggle-hero {
       position: fixed;
       top: 20px;
@@ -98,10 +104,8 @@
   <video src="waterbabiesnvc.mp4" autoplay muted loop playsinline></video>
 </div>
 
-<!-- Return arrow as keyhole -->
-<a href="index.html" class="return-arrow" aria-label="Return to homepage">
-  &#8592;
-</a>
+<!-- Return arrow with "NVC" text -->
+<a href="index.html" class="return-arrow" aria-label="Return to homepage"></a>
 
 <!-- Toggle button for hero video overlay -->
 <div class="toggle-hero" onclick="toggleHeroVideo()" aria-label="Toggle Hero Video" title="Toggle Hero Video">
