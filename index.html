@@ -1,8 +1,8 @@
+<!DOCTYPE html>
 <html>
 <head>
   <title>nattyvancleef</title>
-  <meta charset="UTF-8">
-
+  <meta charset="UTF-8" />
   <style>
     body {
       margin: 0;
@@ -11,32 +11,19 @@
       color: #1a1a1a;
     }
 
-    /* HEADER STYLES */
-    header {
-      display: flex;
-      justify-content: space-between;
-      padding: 25px 50px;
-      font-size: 14px;
-      letter-spacing: 1px;
-      position: relative;
-      z-index: 10;
-      background: rgba(247, 246, 244, 0.8); /* optional background for header */
-    }
-
-    header a {
+    /* HOME Button style */
+    .home-link {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(247, 246, 244, 0.8);
+      padding: 10px 20px;
+      border-radius: 5px;
       text-decoration: none;
-      color: inherit;
-      margin: 0 8px;
-      transition: filter 0.3s ease, opacity 0.3s ease;
-    }
-
-    header:hover a {
-      filter: blur(2px);
-    }
-
-    header a:hover {
-      filter: blur(0);
-      opacity: 1;
+      font-weight: bold;
+      font-size: 16px;
+      z-index: 10;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     /* HERO VIDEO AS BACKGROUND FULL PAGE */
@@ -74,9 +61,20 @@
       font-weight: 400;
       line-height: 1.25;
       color: #fff;
+      margin: 0;
     }
 
-    /* OTHER STYLES (sections, grid, etc.) as before */
+    /* Make small text more readable over video */
+    .hero p {
+      color: #fff;
+      font-size: 1.2em;
+      margin-top: 20px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px 20px;
+      border-radius: 10px;
+    }
+
+    /* Sections styles */
     section {
       padding: 100px 20px;
       max-width: 1000px;
@@ -95,74 +93,12 @@
       color: #666;
       line-height: 1.6;
     }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-top: 40px;
-    }
-
-    .card {
-      height: 200px;
-      background: #ddd;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      letter-spacing: 1px;
-    }
-
-    /* MUSIC SECTION */
-    .music-list {
-      margin-top: 40px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .track {
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      text-align: left;
-    }
-
-    .track-title {
-      font-size: 14px;
-      letter-spacing: 1px;
-    }
-
-    audio {
-      width: 100%;
-    }
-
-    /* FOOTER */
-    footer {
-      padding: 60px 20px;
-      text-align: center;
-      font-size: 14px;
-      color: #777;
-    }
   </style>
 </head>
-
 <body>
 
-<!-- HEADER -->
-<header>
-  <div>NVC</div>
-  <div>
-    <a href="#photos">PHOTOS</a> •
-    <a href="#videos">VIDEOS</a> •
-    <a href="#music">MUSIC</a> •
-    <a href="#contact">CONTACT</a>
-  </div>
-</header>
+<!-- HOME Button -->
+<a href="#top" class="home-link">HOME</a>
 
 <!-- Full-page background video -->
 <div class="hero-background">
@@ -173,118 +109,10 @@
 </div>
 
 <!-- Hero overlay content -->
-<section class="hero">
+<section class="hero" id="top">
   <h1>nattyvancleef</h1>
+  <p>Welcome to my portfolio site. Use the menu to navigate to different pages.</p>
 </section>
-
-<!-- PHOTOS -->
-<section id="photos">
-  <h2>Photos</h2>
-  <p>Selected photography work.</p>
-  <div class="grid">
-    <div class="card"><img src="DSCF7323.JPEG" alt="Photo"></div>
-    <div class="card"><img src="DSCF7358.JPEG" alt="Photo"></div>
-    <div class="card"><img src="DSCF7478.JPEG" alt="Photo"></div>
-    <div class="card"><img src="DSCF7770.JPEG" alt="Photo"></div>
-    <div class="card"><img src="DSCF7772.JPEG" alt="Photo"></div>
-    <div class="card"><img src="DSCF7896.JPEG" alt="Photo"></div>
-    <div class="card"><img src="DSCF7960.JPEG" alt="Photo"></div>
-    <div class="card"><img src="DSCF8338.JPEG" alt="Photo"></div>
-    <div class="card"><img src="DSCF8395.jpg" alt="Photo"></div>
-    <div class="card"><img src="DSCF8746.JPEG" alt="Photo"></div>
-    <div class="card"><img src="DSCF8777.JPEG" alt="Photo"></div>
-    <div class="card"><img src="DSCF8792.JPEG" alt="Photo"></div>
-    <div class="card"><img src="DSCF8815.JPEG" alt="Photo"></div>
-    <div class="card"><img src="DSCF8852.JPEG" alt="Photo"></div>
-    <div class="card"><img src="DSCF9364.JPEG" alt="Photo"></div>
-    <div class="card"><img src="DSCF9494.JPEG" alt="Photo"></div>
-    <div class="card"><img src="IMG_0234.JPG" alt="Photo"></div>
-    <div class="card"><img src="IMG_0240.JPEG" alt="Photo"></div>
-    <div class="card"><img src="IMG_0747.JPEG" alt="Photo"></div>
-    <div class="card"><img src="IMG_1374.JPEG" alt="Photo"></div>
-    <div class="card"><img src="IMG_1569.JPEG" alt="Photo"></div>
-    <div class="card"><img src="IMG_1696.jpg" alt="Photo"></div>
-    <div class="card"><img src="IMG_1966.jpg" alt="Photo"></div>
-    <div class="card"><img src="IMG_2026.JPEG" alt="Photo"></div>
-    <div class="card"><img src="IMG_2078.jpg" alt="Photo"></div>
-    <div class="card"><img src="IMG_2277 2.jpg" alt="Photo"></div>
-    <div class="card"><img src="IMG_2277.jpg" alt="Photo"></div>
-    <div class="card"><img src="IMG_2536.JPEG" alt="Photo"></div>
-    <div class="card"><img src="IMG_2621.JPEG" alt="Photo"></div>
-    <div class="card"><img src="IMG_2675.JPG" alt="Photo"></div>
-    <div class="card"><img src="IMG_2724.JPG" alt="Photo"></div>
-    <div class="card"><img src="IMG_4057.jpg" alt="Photo"></div>
-    <div class="card"><img src="IMG_4222.JPG" alt="Photo"></div>
-    <div class="card"><img src="IMG_6539.jpg" alt="Photo"></div>
-    <div class="card"><img src="Jungle'Cleet06.JPG" alt="Photo"></div>
-    <div class="card"><img src="P1000007.JPG" alt="Photo"></div>
-    <div class="card"><img src="P1000086.JPG" alt="Photo"></div>
-    <div class="card"><img src="P1000098.JPG" alt="Photo"></div>
-    <div class="card"><img src="P1000170.JPG" alt="Photo"></div>
-    <div class="card"><img src="P1000195.JPG" alt="Photo"></div>
-    <div class="card"><img src="P1010086.JPG" alt="Photo"></div>
-    <div class="card"><img src="110_0603.JPG" alt="Photo"></div>
-    <div class="card"><img src="B35B75C4-4BA4-434F-A6BB-1DCBAD0984D0.JPG" alt="Photo"></div>
-    <div class="card"><img src="Chelsea Flower Show'04 009.JPG" alt="Photo"></div>
-    <div class="card"><img src="DSCF2287.JPEG" alt="Photo"></div>
-    <div class="card"><img src="DSCF5912.JPEG" alt="Photo"></div>
-    <div class="card"><img src="DSCF6353.jpg" alt="Photo"></div>
-    <div class="card"><img src="DSCF6786.JPEG" alt="Photo"></div>
-    <div class="card"><img src="DSCF6866.JPEG" alt="Photo"></div>
-    <div class="card"><img src="DSCF6977.JPEG" alt="Photo"></div>
-    <div class="card"><img src="DSCF7290.JPEG" alt="Photo"></div>
-    <div class="card"><img src="P1010411.JPG" alt="Photo"></div>
-    <div class="card"><img src="P1010519.JPG" alt="Photo"></div>
-    <div class="card"><img src="P1010526.JPG" alt="Photo"></div>
-    <div class="card"><img src="P1010530.JPEG" alt="Photo"></div>
-    <div class="card"><img src="P1010546.JPEG" alt="Photo"></div>
-    <div class="card"><img src="P7260885.JPEG" alt="Photo"></div>
-  </div>
-</section>
-
-<!-- VIDEOS -->
-<section id="videos">
-  <h2>Videos</h2>
-  <p>Selected video work.</p>
-  <div class="video-container">
-    <video autoplay muted loop playsinline>
-      <source src="waterbabiesnvc.mp4" type="video/mp4" />
-    </video>
-  </div>
-</section>
-
-<!-- MUSIC -->
-<section id="music">
-  <h2>Music</h2>
-  <p>Unfinished ideas, sketches, and beats.</p>
-  <div class="music-list">
-    <div class="track">
-      <div class="track-title">Track 01 — Untitled</div>
-      <audio controls>
-        <source src="track1.mp3" type="audio/mpeg" />
-      </audio>
-    </div>
-    <div class="track">
-      <div class="track-title">Paul and Djon</div>
-      <audio controls>
-        <source src="MYWEBSITE/paul_and_djon.mp3" type="audio/mpeg" />
-        Your browser does not support the audio element.
-      </audio>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact">
-  <h2>Contact</h2>
-  <p>Email: charliesangster@icloud.com</p>
-  <p>Instagram: @charliesngster</p>
-</section>
-
-<footer>
-  © 2026 NVC
-</footer>
 
 </body>
 </html>
-
