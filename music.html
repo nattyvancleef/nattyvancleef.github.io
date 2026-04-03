@@ -27,10 +27,13 @@
       z-index: 10;
     }
 
-    /* Show "NVC" text on arrow button */
+    /* Show "NVC" text on arrow button, thinner and stretched */
     .return-arrow::after {
       content: "NVC";
-      font-weight: bold;
+      font-weight: 300; /* Thinner font weight */
+      display: inline-block;
+      width: 80px; /* Increased width for stretch */
+      text-align: center;
     }
 
     .return-arrow:hover {
@@ -55,16 +58,25 @@
       line-height: 1.6;
     }
 
+    /* Style for each track - remove border, add margin and padding */
     .track {
       margin-bottom: 30px;
       padding: 20px;
-      border: 1px solid #ddd;
       border-radius: 10px;
+      background: transparent;
     }
 
     .track-title {
       font-size: 14px;
       margin-bottom: 10px;
+    }
+
+    /* Visualizer container styles */
+    #visualizer, #visualizer2 {
+      width: 100%;
+      height: 50px;
+      background: #eee;
+      margin-top: 10px;
     }
 
     /* Style for the hero video overlay container */
@@ -91,28 +103,97 @@
 <!-- Return arrow with "NVC" text -->
 <a href="index.html" class="return-arrow" aria-label="Return to homepage"></a>
 
-<!-- Removed toggle button -->
-
 <section id="music">
   <h2>Music</h2>
   <p>Unfinished ideas, sketches, and beats.</p>
+  
+  <!-- Example track with visualizer -->
   <div class="track">
     <div class="track-title">Track 01 — Untitled</div>
-    <audio controls>
-      <source src="track1.mp3" type="audio/mpeg" />
-    </audio>
+    <audio controls id="audio1" src="track1.mp3"></audio>
+    <canvas id="visualizer" data-audio="audio1"></canvas>
   </div>
+
   <div class="track">
     <div class="track-title">Paul and Djon</div>
-    <audio controls>
-      <source src="MYWEBSITE/paul_and_djon.mp3" type="audio/mpeg" />
-      Your browser does not support the audio element.
-    </audio>
+    <audio controls id="audio2" src="MYWEBSITE/paul_and_djon.mp3"></audio>
+    <canvas id="visualizer2" data-audio="audio2"></canvas>
   </div>
 </section>
 
 <script>
-  // No toggle function needed as toggle button is removed
+  // Remove black borders
+  document.querySelectorAll('.track').forEach(el => {
+    el.style.border = 'none';
+  });
+
+  // Visualizer setup function
+  function setupVisualizer(audioElementId, canvasId) {
+    const audio = document.getElementById(audioElementId);
+    const canvas = document.getElementById(canvasId);
+    const ctx = canvas.getContext('2d');
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const source = audioCtx.createMediaElementSource(audio);
+    const analyser = audioCtx.createAnalyser();
+
+    source.connect(analyser);
+    analyser.connect(audioCtx.destination);
+    analyser.fftSize = 256;
+
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    function resizeCanvas() {
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function draw() {
+      requestAnimationFrame(draw);
+      analyser.getByteTimeDomainData(dataArray);
+
+      ctx.fillStyle = '#eee';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = '#333';
+
+      ctx.beginPath();
+
+      const sliceWidth = (canvas.width * 1.0) / bufferLength;
+      let x = 0;
+
+      for (let i = 0; i < bufferLength; i++) {
+        const v = dataArray[i] / 128.0;
+        const y = v * canvas.height / 2;
+
+        if (i === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+
+        x += sliceWidth;
+      }
+
+      ctx.stroke();
+    }
+
+    // Start visualization when the audio plays
+    audio.onplay = () => {
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      draw();
+    };
+  }
+
+  // Initialize visualizers
+  setupVisualizer('audio1', 'visualizer');
+  setupVisualizer('audio2', 'visualizer2');
 </script>
 
 </body>
