@@ -4,34 +4,42 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>Photos</title>
+<title>Photos - nattyvancleef</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300&display=swap');
+
 body {
   margin:0;
   font-family:"Helvetica Neue", Arial, sans-serif;
   background:#f7f6f4;
+  overflow-x: hidden;
 }
 
-/* NAV */
+/* NAV (top right) */
 nav {
   position: fixed;
   top:20px;
   right:20px;
+  z-index: 10;
 }
 nav ul {
   display:flex;
   gap:30px;
   list-style:none;
+  margin:0;
+  padding:0;
 }
 nav a {
   text-decoration:none;
   color:#000;
   font-size:24px;
+  font-weight: 300;
+  transition: filter 0.3s;
 }
 nav a:hover { filter: blur(1px); }
 
-/* NVC */
+/* NVC (top left) */
 .nvc {
   position:fixed;
   top:20px;
@@ -40,9 +48,10 @@ nav a:hover { filter: blur(1px); }
   color:#000;
   font-size:14px;
   letter-spacing:2px;
+  z-index:10;
 }
 
-/* GRID */
+/* GRID for images and cards */
 .gallery {
   padding:120px 40px;
   display:grid;
@@ -50,7 +59,7 @@ nav a:hover { filter: blur(1px); }
   gap:20px;
 }
 
-/* Existing images in gallery */
+/* Style for original images in gallery */
 .gallery img {
   width:100%;
   cursor:pointer;
@@ -60,7 +69,7 @@ nav a:hover { filter: blur(1px); }
   transform:scale(1.02);
 }
 
-/* New card images styling for added cards */
+/* Style for added cards with images */
 .card {
   width: 100%;
 }
@@ -73,7 +82,7 @@ nav a:hover { filter: blur(1px); }
   transform:scale(1.02);
 }
 
-/* VIEWER */
+/* Viewer overlay for clicked images */
 #viewer {
   position:fixed;
   inset:0;
@@ -88,28 +97,30 @@ nav a:hover { filter: blur(1px); }
 }
 </style>
 </head>
-
 <body>
 
+<!-- NVC label (top left) -->
 <a href="index.html" class="nvc">NVC</a>
 
+<!-- Navigation menu (top right) -->
 <nav>
-<ul>
-<li><a href="photos.html">Photos</a></li>
-<li><a href="videos.html">Videos</a></li>
-<li><a href="music.html">Music</a></li>
-<li><a href="contact.html">Contact</a></li>
-</ul>
+  <ul>
+    <li><a href="photos.html">Photos</a></li>
+    <li><a href="videos.html">Videos</a></li>
+    <li><a href="music.html">Music</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
 </nav>
 
+<!-- Gallery with existing images and added cards -->
 <div class="gallery">
-  <!-- Existing images in your gallery -->
+  <!-- Existing images -->
   <img src="IMG_4222.JPG" />
   <img src="P1000170.JPG" />
   <img src="DSCF2287.JPEG" />
   <img src="DSCF5912.JPEG" />
 
-  <!-- Added cards (no duplicates, based on your list) -->
+  <!-- Added cards (no duplicates) -->
   <div class="card"><img src="DSCF7323.JPEG" alt="Photo"></div>
   <div class="card"><img src="DSCF7358.JPEG" alt="Photo"></div>
   <div class="card"><img src="DSCF7478.JPEG" alt="Photo"></div>
@@ -175,8 +186,8 @@ nav a:hover { filter: blur(1px); }
 </div>
 
 <script>
-document.querySelectorAll('.gallery img, .card img').forEach(img=>{
-  img.onclick = ()=>{
+document.querySelectorAll('.gallery img, .card img').forEach(img => {
+  img.onclick = () => {
     document.querySelector('#viewer img').src = img.src;
     document.getElementById('viewer').style.display='flex';
   };
