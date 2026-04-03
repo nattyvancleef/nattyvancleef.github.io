@@ -11,7 +11,7 @@
       color: #1a1a1a;
     }
 
-    /* Return arrow shaped like a curved L pointing outward to the left */
+    /* Return arrow with "NVC" text, pointing outward left */
     .return-arrow {
       position: fixed;
       top: 20px;
@@ -23,8 +23,13 @@
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.2);
       backdrop-filter: blur(4px);
-      transition: filter 0.3s, background 0.3s;
       z-index: 10;
+    }
+
+    /* Change to display "NVC" text instead of arrow */
+    .return-arrow::after {
+      content: "NVC";
+      font-weight: bold;
     }
 
     .return-arrow:hover {
@@ -62,14 +67,14 @@
       border-radius: 10px;
       overflow: hidden;
       cursor: pointer; /* Indicate clickable images */
-      background: transparent; /* No background or border */
+      background: transparent;
     }
 
     .card img {
       width: 100%;
       height: auto;
       display: block;
-      border-radius: 10px; /* Keep rounded corners if desired */
+      border-radius: 10px; /* Keep rounded corners */
     }
 
     /* Lightbox for enlarged images */
@@ -90,43 +95,19 @@
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0,0,0,0.5);
       cursor: pointer;
-      transition: transform 0.3s;
-    }
-
-    #lightbox img:hover {
-      transform: scale(1.05);
-    }
-
-    /* Style for the hero video overlay container (if needed later) */
-    #hero-video {
-      display: none; /* Hidden by default */
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: 999;
-    }
-
-    #hero-video video {
-      width: 100%; height: 100%; object-fit: cover;
+      /* Removed hover zoom effect for less animation on click */
     }
   </style>
 </head>
 <body>
-
-<!-- Hero Video Overlay (optional) -->
-<div id="hero-video">
-  <video src="your-hero-video.mp4" autoplay muted loop></video>
-</div>
 
 <!-- Lightbox for enlarged photo -->
 <div id="lightbox" onclick="closeLightbox()">
   <img src="" alt="Enlarged Photo" />
 </div>
 
-<!-- Return arrow shape like a curved L pointing outward to the left -->
-<a href="index.html" class="return-arrow" aria-label="Return to homepage">
-  &#8678; <!-- Unicode left arrow, can be styled to look like a curved L if needed -->
-</a>
+<!-- Return arrow with "NVC" text -->
+<a href="index.html" class="return-arrow" aria-label="Return to homepage"></a>
 
 <section id="photos">
   <h2>Photos</h2>
@@ -191,18 +172,10 @@
     <div class="card"><img src="P1010530.JPEG" alt="Photo"></div>
     <div class="card"><img src="P1010546.JPEG" alt="Photo"></div>
     <div class="card"><img src="P7260885.JPEG" alt="Photo"></div>
-    <!-- Add more images as needed -->
   </div>
 </section>
 
 <script>
-  function toggleHeroVideo() {
-    const heroVideo = document.getElementById('hero-video');
-    if (heroVideo) {
-      heroVideo.style.display = (heroVideo.style.display === 'block') ? 'none' : 'none';
-    }
-  }
-
   // Lightbox functionality
   document.querySelectorAll('.card img').forEach(img => {
     img.addEventListener('click', () => {
