@@ -26,10 +26,13 @@
       z-index: 10;
     }
 
-    /* Change to display "NVC" text instead of arrow */
+    /* Display "NVC" text instead of arrow, thinner font, stretched width */
     .return-arrow::after {
       content: "NVC";
-      font-weight: bold;
+      font-weight: 300; /* Thinner font weight */
+      display: inline-block;
+      width: 80px; /* Increased width for stretch */
+      text-align: center;
     }
 
     .return-arrow:hover {
@@ -190,6 +193,5 @@
     document.getElementById('lightbox').style.display = 'none';
   }
 </script>
-
 </body>
 </html>
