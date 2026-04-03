@@ -4,9 +4,11 @@
   <title>nattyvancleef</title>
   <meta charset="UTF-8" />
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300&display=swap');
+
     body {
       margin: 0;
-      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
       background: #f7f6f4;
       color: #1a1a1a;
     }
@@ -38,12 +40,11 @@
       text-decoration: none;
       color: #fff;
       font-size: 24px; /* bigger and sleeker */
-      font-weight: 600;
+      font-weight: 300; /* thinner font weight */
       padding: 8px 12px;
       border-radius: 4px;
       transition: filter 0.3s, mix-blend-mode 0.3s;
-      font-family: "Helvetica Neue", Arial, sans-serif;
-      backdrop-filter: none; /* no overlay background */
+      font-family: 'Helvetica Neue', Arial, sans-serif;
     }
 
     /* Hover effect: blur and blending with hero video */
@@ -81,44 +82,14 @@
       z-index: 1;
     }
 
-    /* Larger, sleeker font for main title */
+    /* Larger, sleeker font for main title with increased max width */
     .hero h1 {
       font-size: 4em; /* bigger */
-      max-width: 800px;
-      font-weight: 700;
+      max-width: 900px; /* slightly wider */
+      font-weight: 300; /* thin font weight */
       line-height: 1.2;
       color: #fff;
       margin: 0;
-    }
-
-    /* Small text styling remains same but can be adjusted if needed */
-    .hero p {
-      color: #fff;
-      font-size: 1.2em;
-      margin-top: 20px;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 10px 20px;
-      border-radius: 10px;
-    }
-
-    /* Sections styles */
-    section {
-      padding: 100px 20px;
-      max-width: 1000px;
-      margin: auto;
-      text-align: center;
-      position: relative;
-      z-index: 2;
-    }
-
-    h2 {
-      font-size: 2em;
-      margin-bottom: 20px;
-    }
-
-    p {
-      color: #666;
-      line-height: 1.6;
     }
   </style>
 </head>
@@ -127,7 +98,7 @@
 <!-- Navigation Menu at Top Right -->
 <nav>
   <ul>
-    <li><a href="index.html">Home</a></li>
+    <!-- Removed the Home link -->
     <li><a href="photos.html">Photos</a></li>
     <li><a href="videos.html">Videos</a></li>
     <li><a href="music.html">Music</a></li>
@@ -146,7 +117,6 @@
 <!-- Hero overlay content -->
 <section class="hero" id="top">
   <h1>nattyvancleef</h1>
-  <p>Welcome to my portfolio site. Use the menu to navigate to different pages.</p>
 </section>
 
 </body>
