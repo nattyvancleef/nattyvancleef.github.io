@@ -11,12 +11,12 @@
       color: #1a1a1a;
     }
 
-    /* Return arrow styled as a keyhole with blur effect */
+    /* Return arrow shaped like a curved L pointing outward to the left */
     .return-arrow {
       position: fixed;
       top: 20px;
       left: 20px;
-      font-size: 24px;
+      font-size: 30px;
       color: #fff;
       text-decoration: none;
       padding: 10px;
@@ -30,25 +30,6 @@
     .return-arrow:hover {
       filter: blur(1px);
       background: rgba(255, 255, 255, 0.3);
-    }
-
-    /* Toggle button for hero video overlay */
-    .toggle-hero {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      font-size: 36px;
-      cursor: pointer;
-      z-index: 1000;
-      color: #fff;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 15px;
-      border-radius: 50%;
-      transition: background 0.3s;
-    }
-
-    .toggle-hero:hover {
-      background: rgba(0, 0, 0, 0.6);
     }
 
     section {
@@ -76,30 +57,22 @@
       margin-top: 40px;
     }
 
-    /* Style for each photo card */
+    /* Photo card without borders or overlay */
     .card {
       border-radius: 10px;
       overflow: hidden;
-      border: 2px solid #ccc; /* Uniform border for all images */
       cursor: pointer; /* Indicate clickable images */
-      background: #fff; /* Optional: background for the card */
+      background: transparent; /* No background or border */
     }
 
-    /* Make images responsive and fit container */
     .card img {
       width: 100%;
       height: auto;
       display: block;
-      border-radius: 10px; /* Match container border radius */
-      transition: transform 0.3s; /* Optional: smooth zoom effect on hover */
+      border-radius: 10px; /* Keep rounded corners if desired */
     }
 
-    /* Optional: add zoom effect on hover */
-    .card img:hover {
-      transform: scale(1.02);
-    }
-
-    /* Style for the full-size image overlay ("lightbox") */
+    /* Lightbox for enlarged images */
     #lightbox {
       display: none; /* Hidden by default */
       position: fixed;
@@ -124,13 +97,13 @@
       transform: scale(1.05);
     }
 
-    /* Style for the hero video overlay container */
+    /* Style for the hero video overlay container (if needed later) */
     #hero-video {
       display: none; /* Hidden by default */
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      z-index: 999; /* Behind the toggle button */
+      z-index: 999;
     }
 
     #hero-video video {
@@ -140,31 +113,26 @@
 </head>
 <body>
 
-<!-- Hero Video Overlay (hidden by default) -->
+<!-- Hero Video Overlay (optional) -->
 <div id="hero-video">
   <video src="your-hero-video.mp4" autoplay muted loop></video>
 </div>
 
-<!-- Lightbox overlay for full-size images -->
+<!-- Lightbox for enlarged photo -->
 <div id="lightbox" onclick="closeLightbox()">
-  <img src="" alt="Enlarged photo" />
+  <img src="" alt="Enlarged Photo" />
 </div>
 
-<!-- Return arrow as keyhole -->
+<!-- Return arrow shape like a curved L pointing outward to the left -->
 <a href="index.html" class="return-arrow" aria-label="Return to homepage">
-  &#8592;
+  &#8678; <!-- Unicode left arrow, can be styled to look like a curved L if needed -->
 </a>
-
-<!-- Toggle button for hero video overlay -->
-<div class="toggle-hero" onclick="toggleHeroVideo()" aria-label="Toggle Hero Video" title="Toggle Hero Video">
-  &#9658; <!-- Play symbol -->
-</div>
 
 <section id="photos">
   <h2>Photos</h2>
   <p>Selected photography work.</p>
   <div class="grid">
-    <!-- All your images -->
+    <!-- Your images go here -->
     <div class="card"><img src="DSCF7323.JPEG" alt="Photo"></div>
     <div class="card"><img src="DSCF7358.JPEG" alt="Photo"></div>
     <div class="card"><img src="DSCF7478.JPEG" alt="Photo"></div>
@@ -231,7 +199,7 @@
   function toggleHeroVideo() {
     const heroVideo = document.getElementById('hero-video');
     if (heroVideo) {
-      heroVideo.style.display = (heroVideo.style.display === 'block') ? 'none' : 'block';
+      heroVideo.style.display = (heroVideo.style.display === 'block') ? 'none' : 'none';
     }
   }
 
