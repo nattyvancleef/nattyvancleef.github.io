@@ -27,10 +27,13 @@
       z-index: 10;
     }
 
-    /* Show "NVC" text on arrow button */
+    /* Show "NVC" text on arrow button, thinner and stretched */
     .return-arrow::after {
       content: "NVC";
-      font-weight: bold;
+      font-weight: 300; /* Thinner font weight */
+      display: inline-block;
+      width: 80px; /* Increased width for stretch */
+      text-align: center;
     }
 
     .return-arrow:hover {
