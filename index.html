@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<!DOCTYPE html>
 <html>
 <head>
   <title>My Site</title>
@@ -13,6 +11,7 @@
       color: #1a1a1a;
     }
 
+    /* HEADER STYLES */
     header {
       display: flex;
       justify-content: space-between;
@@ -37,15 +36,35 @@
       opacity: 1;
     }
 
+    /* HERO SECTION STYLES */
     .hero {
+      position: relative;
       height: 85vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 0 20px;
       text-align: center;
+      overflow: hidden;
     }
 
+    .hero-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      color: #fff; /* Text color for contrast */
+    }
+
+    /* HERO TITLE STYLE (optional overlay text) */
     .hero h1 {
       font-size: 3.5em;
       max-width: 800px;
@@ -53,6 +72,7 @@
       line-height: 1.25;
     }
 
+    /* OTHER STYLES */
     section {
       padding: 100px 20px;
       max-width: 1000px;
@@ -147,14 +167,14 @@
   </div>
 </header>
 
+<!-- HERO SECTION WITH BACKGROUND VIDEO AND OVERLAY CONTENT -->
 <section class="hero">
   <video autoplay muted loop playsinline class="hero-video">
-    <source src="ambshighschoolinvert.2.mp4" type="video/mp4">
+    <source src="ambshighschoolinvert.2.mp4" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
-
   <div class="hero-content">
-    <h1>A showcase to knock the pillars out.</h1>
+    <h1>Welcome to My Site</h1>
   </div>
 </section>
 
@@ -162,66 +182,65 @@
 <section id="photos">
   <h2>Photos</h2>
   <p>Selected photography work.</p>
-
   <div class="grid">
-  <div class="card"><img src="DSCF7323.JPEG" alt="Photo"></div>
-<div class="card"><img src="DSCF7358.JPEG" alt="Photo"></div>
-<div class="card"><img src="DSCF7478.JPEG" alt="Photo"></div>
-<div class="card"><img src="DSCF7770.JPEG" alt="Photo"></div>
-<div class="card"><img src="DSCF7772.JPEG" alt="Photo"></div>
-<div class="card"><img src="DSCF7896.JPEG" alt="Photo"></div>
-<div class="card"><img src="DSCF7960.JPEG" alt="Photo"></div>
-<div class="card"><img src="DSCF8338.JPEG" alt="Photo"></div>
-<div class="card"><img src="DSCF8395.jpg" alt="Photo"></div>
-<div class="card"><img src="DSCF8746.JPEG" alt="Photo"></div>
-<div class="card"><img src="DSCF8777.JPEG" alt="Photo"></div>
-<div class="card"><img src="DSCF8792.JPEG" alt="Photo"></div>
-<div class="card"><img src="DSCF8815.JPEG" alt="Photo"></div>
-<div class="card"><img src="DSCF8852.JPEG" alt="Photo"></div>
-<div class="card"><img src="DSCF9364.JPEG" alt="Photo"></div>
-<div class="card"><img src="DSCF9494.JPEG" alt="Photo"></div>
-<div class="card"><img src="DSCF9962.JPEG" alt="Photo"></div>
-<div class="card"><img src="IMG_0234.JPG" alt="Photo"></div>
-<div class="card"><img src="IMG_0240.JPEG" alt="Photo"></div>
-<div class="card"><img src="IMG_0747.JPEG" alt="Photo"></div>
-<div class="card"><img src="IMG_1374.JPEG" alt="Photo"></div>
-<div class="card"><img src="IMG_1569.JPEG" alt="Photo"></div>
-<div class="card"><img src="IMG_1696.jpg" alt="Photo"></div>
-<div class="card"><img src="IMG_1966.jpg" alt="Photo"></div>
-<div class="card"><img src="IMG_2026.JPEG" alt="Photo"></div>
-<div class="card"><img src="IMG_2078.jpg" alt="Photo"></div>
-<div class="card"><img src="IMG_2277 2.jpg" alt="Photo"></div>
-<div class="card"><img src="IMG_2277.jpg" alt="Photo"></div>
-<div class="card"><img src="IMG_2536.JPEG" alt="Photo"></div>
-<div class="card"><img src="IMG_2621.JPEG" alt="Photo"></div>
-<div class="card"><img src="IMG_2675.JPG" alt="Photo"></div>
-<div class="card"><img src="IMG_2724.JPG" alt="Photo"></div>
-<div class="card"><img src="IMG_4057.jpg" alt="Photo"></div>
-<div class="card"><img src="IMG_4222.JPG" alt="Photo"></div>
-<div class="card"><img src="IMG_6539.jpg" alt="Photo"></div>
-<div class="card"><img src="Jungle'Cleet06.JPG" alt="Photo"></div>
-<div class="card"><img src="P1000007.JPG" alt="Photo"></div>
-<div class="card"><img src="P1000086.JPG" alt="Photo"></div>
-<div class="card"><img src="P1000098.JPG" alt="Photo"></div>
-<div class="card"><img src="P1000170.JPG" alt="Photo"></div>
-<div class="card"><img src="P1000195.JPG" alt="Photo"></div>
-<div class="card"><img src="P1010086.JPG" alt="Photo"></div>
-<div class="card"><img src="110_0603.JPG" alt="Photo"></div>
-<div class="card"><img src="B35B75C4-4BA4-434F-A6BB-1DCBAD0984D0.JPG" alt="Photo"></div>
-<div class="card"><img src="Chelsea Flower Show'04 009.JPG" alt="Photo"></div>
-<div class="card"><img src="DSCF2287.JPEG" alt="Photo"></div>
-<div class="card"><img src="DSCF5912.JPEG" alt="Photo"></div>
-<div class="card"><img src="DSCF6353.jpg" alt="Photo"></div>
-<div class="card"><img src="DSCF6786.JPEG" alt="Photo"></div>
-<div class="card"><img src="DSCF6866.JPEG" alt="Photo"></div>
-<div class="card"><img src="DSCF6977.JPEG" alt="Photo"></div>
-<div class="card"><img src="DSCF7290.JPEG" alt="Photo"></div>
-<div class="card"><img src="P1010411.JPG" alt="Photo"></div>
-<div class="card"><img src="P1010519.JPG" alt="Photo"></div>
-<div class="card"><img src="P1010526.JPG" alt="Photo"></div>
-<div class="card"><img src="P1010530.JPEG" alt="Photo"></div>
-<div class="card"><img src="P1010546.JPEG" alt="Photo"></div>
-<div class="card"><img src="P7260885.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF7323.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF7358.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF7478.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF7770.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF7772.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF7896.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF7960.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF8338.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF8395.jpg" alt="Photo"></div>
+    <div class="card"><img src="DSCF8746.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF8777.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF8792.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF8815.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF8852.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF9364.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF9494.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF9962.JPEG" alt="Photo"></div>
+    <div class="card"><img src="IMG_0234.JPG" alt="Photo"></div>
+    <div class="card"><img src="IMG_0240.JPEG" alt="Photo"></div>
+    <div class="card"><img src="IMG_0747.JPEG" alt="Photo"></div>
+    <div class="card"><img src="IMG_1374.JPEG" alt="Photo"></div>
+    <div class="card"><img src="IMG_1569.JPEG" alt="Photo"></div>
+    <div class="card"><img src="IMG_1696.jpg" alt="Photo"></div>
+    <div class="card"><img src="IMG_1966.jpg" alt="Photo"></div>
+    <div class="card"><img src="IMG_2026.JPEG" alt="Photo"></div>
+    <div class="card"><img src="IMG_2078.jpg" alt="Photo"></div>
+    <div class="card"><img src="IMG_2277 2.jpg" alt="Photo"></div>
+    <div class="card"><img src="IMG_2277.jpg" alt="Photo"></div>
+    <div class="card"><img src="IMG_2536.JPEG" alt="Photo"></div>
+    <div class="card"><img src="IMG_2621.JPEG" alt="Photo"></div>
+    <div class="card"><img src="IMG_2675.JPG" alt="Photo"></div>
+    <div class="card"><img src="IMG_2724.JPG" alt="Photo"></div>
+    <div class="card"><img src="IMG_4057.jpg" alt="Photo"></div>
+    <div class="card"><img src="IMG_4222.JPG" alt="Photo"></div>
+    <div class="card"><img src="IMG_6539.jpg" alt="Photo"></div>
+    <div class="card"><img src="Jungle'Cleet06.JPG" alt="Photo"></div>
+    <div class="card"><img src="P1000007.JPG" alt="Photo"></div>
+    <div class="card"><img src="P1000086.JPG" alt="Photo"></div>
+    <div class="card"><img src="P1000098.JPG" alt="Photo"></div>
+    <div class="card"><img src="P1000170.JPG" alt="Photo"></div>
+    <div class="card"><img src="P1000195.JPG" alt="Photo"></div>
+    <div class="card"><img src="P1010086.JPG" alt="Photo"></div>
+    <div class="card"><img src="110_0603.JPG" alt="Photo"></div>
+    <div class="card"><img src="B35B75C4-4BA4-434F-A6BB-1DCBAD0984D0.JPG" alt="Photo"></div>
+    <div class="card"><img src="Chelsea Flower Show'04 009.JPG" alt="Photo"></div>
+    <div class="card"><img src="DSCF2287.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF5912.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF6353.jpg" alt="Photo"></div>
+    <div class="card"><img src="DSCF6786.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF6866.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF6977.JPEG" alt="Photo"></div>
+    <div class="card"><img src="DSCF7290.JPEG" alt="Photo"></div>
+    <div class="card"><img src="P1010411.JPG" alt="Photo"></div>
+    <div class="card"><img src="P1010519.JPG" alt="Photo"></div>
+    <div class="card"><img src="P1010526.JPG" alt="Photo"></div>
+    <div class="card"><img src="P1010530.JPEG" alt="Photo"></div>
+    <div class="card"><img src="P1010546.JPEG" alt="Photo"></div>
+    <div class="card"><img src="P7260885.JPEG" alt="Photo"></div>
   </div>
 </section>
 
@@ -229,10 +248,9 @@
 <section id="videos">
   <h2>Videos</h2>
   <p>Selected video work.</p>
-
   <div class="video-container">
     <video autoplay muted loop playsinline>
-      <source src="waterbabiesnvc.mp4" type="video/mp4">
+      <source src="waterbabiesnvc.mp4" type="video/mp4" />
     </video>
   </div>
 </section>
@@ -241,23 +259,19 @@
 <section id="music">
   <h2>Music</h2>
   <p>Unfinished ideas, sketches, and beats.</p>
-
   <div class="music-list">
-
     <div class="track">
       <div class="track-title">Track 01 — Untitled</div>
       <audio controls>
-        <source src="track1.mp3" type="audio/mpeg">
+        <source src="track1.mp3" type="audio/mpeg" />
       </audio>
     </div>
-
     <div class="track">
       <div class="track-title">paul and djon</div>
       <audio controls>
-        <source src="paul and djon.m4a" type="audio/m4a">
+        <source src="paul and djon.m4a" type="audio/m4a" />
       </audio>
     </div>
-
   </div>
 </section>
 
