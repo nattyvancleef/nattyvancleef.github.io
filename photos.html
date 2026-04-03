@@ -3,22 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Photo Museum</title>
 
 <style>
+
 body {
   margin:0;
-  font-family: Arial, sans-serif;
-  background:#e9e9e9;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background:#f7f6f4;
   overflow:hidden;
 }
 
+/* SCENE */
 #scene {
   width:100vw;
   height:100vh;
-  perspective:1200px;
+  perspective:1400px;
+  overflow:hidden;
 }
 
+/* ROOM */
 .room {
   position:absolute;
   width:2000px;
@@ -26,31 +31,61 @@ body {
   left:50%;
   top:50%;
   transform-style:preserve-3d;
-  transform:translate(-50%,-50%) rotateY(0deg);
-  transition:transform 0.8s ease, opacity 0.8s ease;
+  transform:translate(-50%,-50%);
+  transition:opacity 0.6s ease;
 }
 
+/* WALLS */
 .wall {
   position:absolute;
   width:2000px;
   height:1200px;
-  background:#fdfdfd;
-  box-shadow:inset 0 0 120px rgba(0,0,0,0.08);
+  background:#ffffff;
+  box-shadow:inset 0 0 80px rgba(0,0,0,0.08);
 }
 
-.wall.front { transform: translateZ(1000px); }
-.wall.back { transform: rotateY(180deg) translateZ(1000px); }
-.wall.left { transform: rotateY(-90deg) translateZ(1000px); }
-.wall.right { transform: rotateY(90deg) translateZ(1000px); }
+.front { transform: translateZ(1000px); }
+.back { transform: rotateY(180deg) translateZ(1000px); }
+.left { transform: rotateY(-90deg) translateZ(1000px); }
+.right { transform: rotateY(90deg) translateZ(1000px); }
 
+/* FLOOR (wood-ish) */
 .floor {
   position:absolute;
   width:2000px;
   height:2000px;
-  background:linear-gradient(#ddd,#cfcfcf);
+  background: repeating-linear-gradient(
+    90deg,
+    #d6d2cc,
+    #d6d2cc 40px,
+    #cfcac3 40px,
+    #cfcac3 80px
+  );
   transform: rotateX(90deg) translateZ(-600px);
 }
 
+/* CEILING */
+.ceiling {
+  position:absolute;
+  width:2000px;
+  height:1200px;
+  background:#f4f4f4;
+  transform: rotateX(-90deg) translateZ(-600px);
+}
+
+/* LIGHT STRIPS */
+.light {
+  position:absolute;
+  width:300px;
+  height:10px;
+  background:rgba(255,255,255,0.8);
+  top:200px;
+  left:50%;
+  transform:translateX(-50%);
+  box-shadow:0 0 20px rgba(255,255,255,0.6);
+}
+
+/* ART */
 .art {
   position:absolute;
   cursor:pointer;
@@ -58,19 +93,18 @@ body {
 }
 
 .art img {
-  max-width:260px;
-  display:block;
+  width:240px;
 }
 
 .art:hover {
   transform:scale(1.05);
 }
 
-/* VIEWER (zoom instead of hard popup) */
+/* VIEWER */
 #viewer {
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.85);
+  background:rgba(0,0,0,0.9);
   display:none;
   align-items:center;
   justify-content:center;
@@ -78,9 +112,30 @@ body {
 }
 
 #viewer img {
-  max-width:85%;
-  max-height:85%;
-  transition:transform 0.4s ease;
+  max-width:90%;
+  max-height:90%;
+}
+
+/* NAV (match index) */
+.nav {
+  position:fixed;
+  top:20px;
+  right:20px;
+  display:flex;
+  gap:30px;
+  z-index:10;
+}
+
+.nav a {
+  text-decoration:none;
+  color:#000;
+  font-size:20px;
+  font-weight:300;
+  transition:filter 0.3s;
+}
+
+.nav a:hover {
+  filter:blur(1px);
 }
 
 /* CONTROLS */
@@ -91,29 +146,18 @@ body {
   transform:translateX(-50%);
   display:flex;
   gap:10px;
-  z-index:10;
 }
 
 button {
-  padding:10px 15px;
+  background:none;
   border:none;
-  background:#000;
-  color:#fff;
+  font-size:20px;
   cursor:pointer;
-}
-
-.room-nav {
-  position:fixed;
-  top:20px;
-  right:20px;
-  display:flex;
-  gap:10px;
-  z-index:10;
 }
 
 /* MOBILE */
 @media(max-width:700px){
-  .art img{ max-width:180px; }
+  .art img { width:150px; }
 }
 
 </style>
@@ -121,9 +165,16 @@ button {
 
 <body>
 
+<div class="nav">
+  <a href="photos.html">Photos</a>
+  <a href="videos.html">Videos</a>
+  <a href="music.html">Music</a>
+  <a href="contact.html">Contact</a>
+</div>
+
 <div id="scene"></div>
 
-<div id="viewer" onclick="closeViewer()">
+<div id="viewer" onclick="this.style.display='none'">
   <img src="">
 </div>
 
@@ -132,92 +183,100 @@ button {
   <button onclick="rotate(90)">→</button>
 </div>
 
-<div class="room-nav">
-  <button onclick="changeRoom(-1)">Prev</button>
-  <button onclick="changeRoom(1)">Next</button>
-</div>
-
 <script>
-const images = [
-"DSCF7323.JPEG","DSCF7358.JPEG","DSCF7478.JPEG","DSCF7770.JPEG","DSCF7772.JPEG","DSCF7896.JPEG","DSCF7960.JPEG","DSCF8338.JPEG","DSCF8395.jpg","DSCF8746.JPEG","DSCF8777.JPEG","DSCF8792.JPEG","DSCF8815.JPEG","DSCF8852.JPEG","DSCF9364.JPEG","DSCF9494.JPEG","DSCF9962.JPEG",
-"IMG_0234.JPG","IMG_0240.JPEG","IMG_0747.JPEG","IMG_1374.JPEG","IMG_1569.JPEG","IMG_1696.jpg","IMG_1966.jpg","IMG_2026.JPEG","IMG_2078.jpg","IMG_2277 2.jpg","IMG_2277.jpg","IMG_2536.JPEG","IMG_2621.JPEG","IMG_2675.JPG","IMG_2724.JPG","IMG_4057.jpg","IMG_4222.JPG","IMG_6539.jpg",
-"Jungle'Cleet06.JPG","P1000007.JPG","P1000086.JPG","P1000098.JPG","P1000170.JPG","P1000195.JPG","P1010086.JPG","110_0603.JPG","B35B75C4-4BA4-434F-A6BB-1DCBAD0984D0.JPG","Chelsea Flower Show'04 009.JPG","DSCF2287.JPEG","DSCF5912.JPEG","DSCF6353.jpg","DSCF6786.JPEG","DSCF6866.JPEG","DSCF6977.JPEG","DSCF7290.JPEG","P1010411.JPG","P1010519.JPG","P1010526.JPG","P1010530.JPEG","P1010546.JPEG","P7260885.JPEG"
-];
+
+const images = [/* KEEP YOUR IMAGE LIST HERE SAME AS BEFORE */];
 
 const scene = document.getElementById('scene');
 let rooms = [];
 let currentRoom = 0;
 let rotation = 0;
 
+/* CREATE ROOM */
 function createRoom(imgs){
   const room = document.createElement('div');
   room.className = 'room';
 
   const walls = ['front','right','back','left'];
 
-  walls.forEach(side => {
+  walls.forEach(side=>{
     const wall = document.createElement('div');
     wall.className = 'wall ' + side;
 
-    imgs.splice(0,4).forEach((img,i)=>{
+    for(let i=0;i<3;i++){
+      if(!imgs.length) break;
+
       const art = document.createElement('div');
-      art.className = 'art';
-      art.style.left = (200 + i*350) + 'px';
-      art.style.top = (200 + (i%2)*250) + 'px';
+      art.className='art';
+      art.style.left = (300 + i*450)+'px';
+      art.style.top = (200 + (i%2)*300)+'px';
 
-      const image = document.createElement('img');
-      image.src = img;
+      const img = document.createElement('img');
+      img.src = imgs.shift();
 
-      image.onclick = ()=>openViewer(img);
+      img.onclick = ()=>{
+        document.querySelector('#viewer img').src = img.src;
+        document.getElementById('viewer').style.display='flex';
+      };
 
-      art.appendChild(image);
+      art.appendChild(img);
       wall.appendChild(art);
-    });
+    }
 
     room.appendChild(wall);
   });
 
   const floor = document.createElement('div');
-  floor.className = 'floor';
+  floor.className='floor';
+
+  const ceiling = document.createElement('div');
+  ceiling.className='ceiling';
+
+  const light = document.createElement('div');
+  light.className='light';
+
+  ceiling.appendChild(light);
+
   room.appendChild(floor);
+  room.appendChild(ceiling);
 
   return room;
 }
 
-let tempImages = [...images];
-while(tempImages.length){
-  rooms.push(createRoom(tempImages));
+/* BUILD ROOMS */
+let temp = [...images];
+while(temp.length){
+  rooms.push(createRoom(temp));
 }
 
 rooms.forEach((room,i)=>{
-  if(i!==0) room.style.opacity = 0;
+  if(i!==0) room.style.opacity=0;
   scene.appendChild(room);
 });
 
+/* ROTATE */
 function rotate(deg){
   rotation += deg;
-  rooms[currentRoom].style.transform = `translate(-50%,-50%) rotateY(${rotation}deg)`;
+  rooms[currentRoom].style.transform =
+    `translate(-50%,-50%) rotateY(${rotation}deg)`;
 }
 
+/* CHANGE ROOM */
 function changeRoom(dir){
-  rooms[currentRoom].style.opacity = 0;
+  rooms[currentRoom].style.opacity=0;
   currentRoom = (currentRoom + dir + rooms.length) % rooms.length;
-  rooms[currentRoom].style.opacity = 1;
+  rotation = 0;
+  rooms[currentRoom].style.transform =
+    `translate(-50%,-50%) rotateY(0deg)`;
+  rooms[currentRoom].style.opacity=1;
 }
 
-function openViewer(src){
-  const viewer = document.getElementById('viewer');
-  viewer.style.display='flex';
-  viewer.querySelector('img').src = src;
-}
-
-function closeViewer(){
-  document.getElementById('viewer').style.display='none';
-}
-
-// Swipe
+/* SWIPE */
 let startX=0;
-document.addEventListener('touchstart',e=>startX=e.touches[0].clientX);
+document.addEventListener('touchstart',e=>{
+  startX=e.touches[0].clientX;
+});
+
 document.addEventListener('touchend',e=>{
   let endX=e.changedTouches[0].clientX;
   if(endX-startX>50) rotate(-90);
