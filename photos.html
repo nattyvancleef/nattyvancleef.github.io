@@ -3,106 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Photos</title>
 
 <style>
 body {
   margin:0;
-  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-family:"Helvetica Neue", Arial, sans-serif;
   background:#f7f6f4;
-  overflow:hidden;
 }
 
 /* NAV */
 nav {
   position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 10;
+  top:20px;
+  right:20px;
 }
 nav ul {
-  display: flex;
-  gap: 30px;
-  list-style: none;
+  display:flex;
+  gap:30px;
+  list-style:none;
 }
 nav a {
   text-decoration:none;
   color:#000;
   font-size:24px;
-  font-weight:300;
 }
 nav a:hover { filter: blur(1px); }
 
 /* NVC */
 .nvc {
-  position: fixed;
-  top: 20px;
-  left: 20px;
+  position:fixed;
+  top:20px;
+  left:20px;
   text-decoration:none;
   color:#000;
   font-size:14px;
   letter-spacing:2px;
-  z-index:10;
 }
 
-/* SCENE */
-#scene {
-  width:100vw;
-  height:100vh;
-  perspective:1200px;
+/* GRID */
+.gallery {
+  padding:120px 40px;
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  gap:20px;
 }
 
-/* ROOM */
-.room {
+.gallery img {
   width:100%;
-  height:100%;
-  position:absolute;
-  transform-style:preserve-3d;
-  transition: transform 0.8s ease;
-}
-
-/* WALL */
-.wall {
-  position:absolute;
-  width:100%;
-  height:100%;
-  background:#fff;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:40px;
-  padding:80px;
-  box-sizing:border-box;
-}
-
-.front { transform: translateZ(500px); }
-.back { transform: rotateY(180deg) translateZ(500px); }
-.left { transform: rotateY(-90deg) translateZ(500px); }
-.right { transform: rotateY(90deg) translateZ(500px); }
-
-/* FLOOR */
-.floor {
-  position:absolute;
-  width:100%;
-  height:100%;
-  background: repeating-linear-gradient(
-    90deg,
-    #ddd,
-    #ddd 40px,
-    #ccc 40px,
-    #ccc 80px
-  );
-  transform: rotateX(90deg) translateZ(-300px);
-}
-
-/* ART */
-.art img {
-  width:180px;
   cursor:pointer;
-  transition: transform 0.3s;
+  transition:0.3s;
 }
-.art img:hover { transform: scale(1.05); }
+.gallery img:hover {
+  transform:scale(1.02);
+}
 
 /* VIEWER */
 #viewer {
@@ -116,20 +71,6 @@ nav a:hover { filter: blur(1px); }
 #viewer img {
   max-width:90%;
   max-height:90%;
-}
-
-/* CONTROLS */
-.controls {
-  position:fixed;
-  bottom:20px;
-  left:50%;
-  transform:translateX(-50%);
-}
-button {
-  border:none;
-  background:none;
-  font-size:20px;
-  cursor:pointer;
 }
 </style>
 </head>
@@ -147,64 +88,24 @@ button {
 </ul>
 </nav>
 
-<div id="scene"></div>
+<div class="gallery">
+  <img src="IMG_4222.JPG">
+  <img src="P1000170.JPG">
+  <img src="DSCF2287.JPEG">
+  <img src="DSCF5912.JPEG">
+</div>
 
 <div id="viewer" onclick="this.style.display='none'">
   <img src="">
 </div>
 
-<div class="controls">
-  <button onclick="rotate(-90)">←</button>
-  <button onclick="rotate(90)">→</button>
-</div>
-
 <script>
-
-const images = [
-"IMG_4222.JPG","P1000170.JPG","DSCF2287.JPEG","DSCF5912.JPEG",
-"DSCF6353.jpg","DSCF6786.JPEG","DSCF6866.JPEG","DSCF6977.JPEG"
-];
-
-const scene = document.getElementById('scene');
-let rotation = 0;
-
-const room = document.createElement('div');
-room.className = 'room';
-
-['front','right','back','left'].forEach(side=>{
-  const wall = document.createElement('div');
-  wall.className = 'wall ' + side;
-
-  images.forEach(img=>{
-    const art = document.createElement('div');
-    art.className = 'art';
-
-    const image = document.createElement('img');
-    image.src = img;
-
-    image.onclick = ()=>{
-      document.querySelector('#viewer img').src = img;
-      document.getElementById('viewer').style.display='flex';
-    };
-
-    art.appendChild(image);
-    wall.appendChild(art);
-  });
-
-  room.appendChild(wall);
+document.querySelectorAll('.gallery img').forEach(img=>{
+  img.onclick = ()=>{
+    document.querySelector('#viewer img').src = img.src;
+    document.getElementById('viewer').style.display='flex';
+  };
 });
-
-const floor = document.createElement('div');
-floor.className = 'floor';
-room.appendChild(floor);
-
-scene.appendChild(room);
-
-function rotate(deg){
-  rotation += deg;
-  room.style.transform = `rotateY(${rotation}deg)`;
-}
-
 </script>
 
 </body>
