@@ -11,19 +11,25 @@
       color: #1a1a1a;
     }
 
-    /* Back link style */
-    .back-link {
+    /* Return arrow styled as a keyhole with blur effect */
+    .return-arrow {
       position: fixed;
       top: 20px;
       left: 20px;
-      background: rgba(247, 246, 244, 0.8);
-      padding: 10px 20px;
-      border-radius: 5px;
+      font-size: 24px;
+      color: #fff;
       text-decoration: none;
-      font-weight: bold;
-      font-size: 16px;
+      padding: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(4px);
+      transition: filter 0.3s, background 0.3s;
       z-index: 10;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .return-arrow:hover {
+      filter: blur(1px);
+      background: rgba(255, 255, 255, 0.3);
     }
 
     section {
@@ -58,7 +64,10 @@
 </head>
 <body>
 
-<a href="index.html" class="back-link">HOME</a>
+<!-- Return arrow as keyhole -->
+<a href="index.html" class="return-arrow" aria-label="Return to homepage">
+  &#8592;
+</a>
 
 <section id="music">
   <h2>Music</h2>
