@@ -15,7 +15,7 @@
       overflow-x: hidden;
     }
 
-    /* NAV (same as index) */
+    /* NAV */
     nav {
       position: fixed;
       top: 20px;
@@ -43,7 +43,7 @@
       filter: blur(1px);
     }
 
-    /* NVC button (clean now) */
+    /* NVC */
     .return-arrow {
       position: fixed;
       top: 20px;
@@ -55,19 +55,19 @@
       z-index: 10;
     }
 
-    /* STARFIELD */
+    /* BACKGROUND */
     canvas#stars {
       position: fixed;
       inset: 0;
       z-index: -2;
     }
 
-    /* NEBULA (very subtle) */
     .nebula {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at 30% 40%, rgba(120,120,150,0.08), transparent 60%),
-                  radial-gradient(circle at 70% 60%, rgba(100,100,130,0.06), transparent 70%);
+      background:
+        radial-gradient(circle at 30% 40%, rgba(120,120,150,0.07), transparent 60%),
+        radial-gradient(circle at 70% 60%, rgba(100,100,130,0.05), transparent 70%);
       z-index: -1;
     }
 
@@ -79,7 +79,7 @@
     }
 
     h2 {
-      font-size: 28px;
+      font-size: 24px;
       font-weight: 300;
       letter-spacing: 4px;
     }
@@ -87,41 +87,33 @@
     p {
       color: rgba(255,255,255,0.5);
       margin-bottom: 40px;
+      font-size: 14px;
     }
 
     .track {
-      margin-bottom: 60px;
+      margin-bottom: 70px;
       cursor: pointer;
     }
 
     .track-title {
       font-size: 18px;
-      color: #d0d6ff;
-      margin-bottom: 12px;
+      font-weight: 300;
+      margin-bottom: 6px;
     }
 
     .track.active .track-title {
       opacity: 0.6;
     }
 
-    /* PROGRESS */
-    .progress {
-      width: 100%;
-      height: 2px;
-      background: rgba(255,255,255,0.2);
+    .time {
+      font-size: 13px;
+      opacity: 0.5;
+      margin-bottom: 10px;
     }
 
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: #d0d6ff;
-    }
-
-    /* VISUALISER (line waveform) */
     canvas.visualiser {
       width: 100%;
       height: 60px;
-      margin-top: 10px;
     }
 
     @media (max-width:600px){
@@ -154,11 +146,11 @@
 
   <div class="track" data-audio="audio1">
     <div class="track-title">Paul and Djon</div>
+    <div class="time">0:00</div>
     <audio id="audio1" src="paul and djon.mp3"></audio>
-
-    <div class="progress"><div class="progress-bar"></div></div>
     <canvas class="visualiser"></canvas>
   </div>
+
 </section>
 
 <script>
@@ -167,7 +159,7 @@ let locked = false;
 
 document.querySelectorAll('.track').forEach(track => {
   const audio = document.getElementById(track.dataset.audio);
-  const progressBar = track.querySelector('.progress-bar');
+  const timeDisplay = track.querySelector('.time');
   const canvas = track.querySelector('.visualiser');
   const ctx = canvas.getContext('2d');
 
@@ -184,7 +176,7 @@ document.querySelectorAll('.track').forEach(track => {
 
   source.connect(analyser);
   analyser.connect(audioCtx.destination);
-  analyser.fftSize = 256;
+  analyser.fftSize = 128;
 
   const dataArray = new Uint8Array(analyser.frequencyBinCount);
 
@@ -195,15 +187,24 @@ document.querySelectorAll('.track').forEach(track => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     ctx.beginPath();
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 1.5;
     ctx.strokeStyle = "#d0d6ff";
 
+    const mid = canvas.height / 2;
     const sliceWidth = canvas.width / dataArray.length;
+
     let x = 0;
 
     for (let i = 0; i < dataArray.length; i++) {
-      let v = dataArray[i] / 128.0;
-      let y = v * canvas.height / 2;
+      let v = (dataArray[i] - 128) / 128;
+
+      // soften movement
+      let y = mid + v * (canvas.height * 0.2);
+
+      // lock edges
+      if (i === 0 || i === dataArray.length - 1) {
+        y = mid;
+      }
 
       if (i === 0) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);
@@ -252,19 +253,24 @@ document.querySelectorAll('.track').forEach(track => {
     }
   });
 
+  // countdown timer
   audio.addEventListener('timeupdate', () => {
-    const progress = (audio.currentTime / audio.duration) * 100;
-    progressBar.style.width = progress + "%";
+    if (!audio.duration) return;
+    let remaining = audio.duration - audio.currentTime;
+    let mins = Math.floor(remaining / 60);
+    let secs = Math.floor(remaining % 60).toString().padStart(2,'0');
+    timeDisplay.textContent = `${mins}:${secs}`;
   });
 
   audio.addEventListener('ended', () => {
-    progressBar.style.width = "0%";
+    timeDisplay.textContent = "0:00";
     track.classList.remove('active');
     locked = false;
   });
 });
 
-/* STARS (less perfect, slightly chunkier) */
+
+/* STARS */
 const starCanvas = document.getElementById('stars');
 const starCtx = starCanvas.getContext('2d');
 
@@ -275,10 +281,10 @@ function resizeStars(){
 resizeStars();
 window.addEventListener('resize', resizeStars);
 
-let stars = Array.from({length: 140}, () => ({
+let stars = Array.from({length: 180}, () => ({
   x: Math.random() * starCanvas.width,
   y: Math.random() * starCanvas.height,
-  r: Math.random() * 2.2,
+  r: Math.random() * 2.5,
   o: Math.random()
 }));
 
@@ -287,7 +293,7 @@ function drawStars(){
 
   stars.forEach(s=>{
     starCtx.fillStyle = `rgba(255,255,255,${s.o})`;
-    starCtx.fillRect(s.x, s.y, s.r, s.r); // square = more pixel feel
+    starCtx.fillRect(s.x, s.y, s.r, s.r);
   });
 
   requestAnimationFrame(drawStars);
