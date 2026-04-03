@@ -11,7 +11,7 @@
       color: #1a1a1a;
     }
 
-    /* Return arrow styled as a keyhole with blur effect */
+    /* Return arrow styled as a keyhole with blur effect, now displaying "NVC" */
     .return-arrow {
       position: fixed;
       top: 20px;
@@ -25,6 +25,15 @@
       backdrop-filter: blur(4px);
       transition: filter 0.3s, background 0.3s;
       z-index: 10;
+    }
+
+    /* Show "NVC" text on arrow button, thinner and stretched */
+    .return-arrow::after {
+      content: "NVC";
+      font-weight: 300; /* Thinner font weight */
+      display: inline-block;
+      width: 80px; /* Increased width for stretch */
+      text-align: center;
     }
 
     .return-arrow:hover {
@@ -89,10 +98,8 @@
   <video src="your-hero-video.mp4" autoplay muted loop playsinline></video>
 </div>
 
-<!-- Return arrow as keyhole -->
-<a href="index.html" class="return-arrow" aria-label="Return to homepage">
-  &#8592;
-</a>
+<!-- Return arrow with "NVC" text -->
+<a href="index.html" class="return-arrow" aria-label="Return to homepage"></a>
 
 <!-- Toggle button for hero video overlay -->
 <div class="toggle-hero" onclick="toggleHeroVideo()" aria-label="Toggle Hero Video" title="Toggle Hero Video">
