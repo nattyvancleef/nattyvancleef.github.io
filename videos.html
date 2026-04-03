@@ -4,45 +4,87 @@
   <title>Videos - nattyvancleef</title>
   <meta charset="UTF-8" />
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300&display=swap');
+
     body {
       margin: 0;
-      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
       background: #f7f6f4;
       color: #1a1a1a;
     }
 
-    /* Return arrow styled as a keyhole with blur effect, now displaying "NVC" */
-    .return-arrow {
+    /* Navigation menu styles (top right) */
+    nav {
       position: fixed;
       top: 20px;
-      left: 20px;
-      font-size: 24px;
-      color: #fff;
-      text-decoration: none;
-      padding: 10px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(4px);
-      transition: filter 0.3s, background 0.3s;
+      right: 20px;
+      display: flex;
+      align-items: center;
       z-index: 10;
     }
 
-    /* Show "NVC" text on arrow button, thinner and stretched */
-    .return-arrow::after {
-      content: "NVC";
-      font-weight: 300; /* Thinner font weight */
-      display: inline-block;
-      width: 80px; /* Increased width for stretch */
-      text-align: center;
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+      margin: 0;
+      padding: 0;
     }
 
-    .return-arrow:hover {
+    nav ul li {
+      display: inline;
+    }
+
+    /* Menu links styling */
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 24px; /* bigger and sleeker */
+      font-weight: 300; /* thinner font weight */
+      padding: 8px 12px;
+      border-radius: 4px;
+      transition: filter 0.3s, mix-blend-mode 0.3s;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    /* Hover effect: blur and blending with hero video */
+    nav ul li a:hover {
       filter: blur(1px);
-      background: rgba(255, 255, 255, 0.3);
+      mix-blend-mode: overlay;
     }
 
-    /* Removed toggle-hero styles as toggle button is gone */
+    /* "NVC" in top left */
+    .nvc-label {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 28px;
+      font-weight: 300;
+      color: #fff;
+      z-index: 10;
+      letter-spacing: 2px;
+      background: transparent; /* just the text */
+    }
 
+    /* Hero video background full page */
+    .hero-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      z-index: -1; /* behind other content */
+    }
+
+    .hero-background video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Section styling for content */
     section {
       padding: 50px 20px;
       max-width: 1200px;
@@ -69,13 +111,13 @@
       max-width: 800px;
     }
 
-    /* Style for the hero video overlay container */
+    /* Style for the hero video overlay container (if needed) */
     #hero-video {
-      display: none; /* Hidden by default */
+      display: none; /* Hidden by default, kept for compatibility */
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      z-index: 999; /* Behind other content */
+      z-index: 999;
     }
 
     #hero-video video {
@@ -85,16 +127,27 @@
 </head>
 <body>
 
-<!-- Hero Video Overlay (hidden by default) -->
-<div id="hero-video">
-  <video src="waterbabiesnvc.mp4" autoplay muted loop playsinline></video>
+<!-- Navigation Menu at Top Right -->
+<nav>
+  <ul>
+    <li><a href="photos.html">Photos</a></li>
+    <li><a href="videos.html">Videos</a></li>
+    <li><a href="music.html">Music</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- "NVC" in Top Left -->
+<div class="nvc-label">NVC</div>
+
+<!-- Background Hero Video -->
+<div class="hero-background">
+  <video autoplay muted loop playsinline>
+    <source src="waterbabiesnvc.mp4" type="video/mp4" />
+  </video>
 </div>
 
-<!-- Return arrow with "NVC" text -->
-<a href="index.html" class="return-arrow" aria-label="Return to homepage"></a>
-
-<!-- Removed the toggle button for hero video overlay -->
-
+<!-- Your content section -->
 <section id="videos">
   <h2>Videos</h2>
   <p>Selected video work.</p>
@@ -105,8 +158,9 @@
   </div>
 </section>
 
+<!-- Optional: script if needed -->
 <script>
-  // Removed toggleHeroVideo function as toggle button is gone
+  // No toggle needed since overlay is hidden
 </script>
 
 </body>
