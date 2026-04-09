@@ -29,7 +29,6 @@ nav a {
   color: #fff;
   text-decoration: none;
   font-size: 24px;
-  font-weight: 300;
 }
 nav a:hover { filter: blur(1px); }
 
@@ -37,7 +36,7 @@ nav a:hover { filter: blur(1px); }
   position: fixed;
   top: 20px;
   left: 20px;
-  color: #fff;
+  color: white;
   text-decoration: none;
 }
 
@@ -48,6 +47,11 @@ nav a:hover { filter: blur(1px); }
   width: 140px;
   text-align: center;
   font-size: 12px;
+  transition: 0.2s;
+}
+
+.track-ui:hover {
+  opacity: 0.7;
 }
 
 .progress {
@@ -70,18 +74,18 @@ nav a:hover { filter: blur(1px); }
 /* arrows */
 .arrow {
   position: fixed;
-  bottom: 120px;
-  font-size: 24px;
+  bottom: 160px;
+  font-size: 22px;
   cursor: pointer;
 }
-#leftArrow { left: 48%; }
-#rightArrow { right: 48%; }
+#leftArrow { left: 49%; }
+#rightArrow { right: 49%; }
 
 /* overlay */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.75);
   opacity: 0;
   pointer-events: none;
   transition: 0.3s;
@@ -124,7 +128,7 @@ window.addEventListener("resize", () => {
   h = canvas.height = window.innerHeight;
 });
 
-/* PARALLAX STARS */
+/* STARS */
 const layers = [
   {count:60,speed:0.2,size:1},
   {count:40,speed:0.5,size:2},
@@ -138,15 +142,26 @@ let stars = layers.map(l =>
   }))
 );
 
-/* SONGS */
-const pages = [[
+/* PAGES */
+const pages = [
+[
 { name:"Paul and Djon", src:"paul and djon.mp3", type:"lava" },
 { name:"Almostblue", src:"Almostbloue.mp3", type:"ice" },
 { name:"Architecture", src:"Architecture2.mp3", type:"gas" },
 { name:"bailey", src:"bailey3.mp3", type:"rock" },
 { name:"BODYOFME", src:"BODYOFME RM.mp3", type:"toxic" },
 { name:"deathproof", src:"deathproof2.mp3", type:"ocean" }
-]];
+],
+[
+{ name:"track 7", src:"", type:"lava" },
+{ name:"track 8", src:"", type:"ice" },
+{ name:"track 9", src:"", type:"gas" }
+],
+[
+{ name:"track 10", src:"", type:"rock" },
+{ name:"track 11", src:"", type:"toxic" }
+]
+];
 
 let currentPage = 0;
 let currentAudio = null;
@@ -183,76 +198,30 @@ function buildUI(){
 buildUI();
 
 /* PIXEL PLANET */
-function pixelPlanet(x,y,size,palette,type,time,audioLevel){
-
+function pixelPlanet(x,y,size,color,react=0){
   const step=4;
 
   for(let i=-size;i<size;i+=step){
     for(let j=-size;j<size;j+=step){
       if(i*i+j*j < size*size){
 
-        let color = palette[0];
+        let shade = (i+j)%8===0 ? 0.2 : 0;
+        let pulse = react * 0.5;
 
-        // dithering
-        if((i+j)%8===0) color = palette[1];
-        if((i-j)%10===0) color = palette[2];
+        ctx.fillStyle = `rgba(${color[0]},${color[1]},${color[2]},1)`;
+        ctx.fillRect(x+i,y+j,step,step);
 
-        // audio pulse
-        if(audioLevel>0.2 && Math.random()<audioLevel){
-          color = palette[3];
+        if(shade){
+          ctx.fillStyle="rgba(255,255,255,0.1)";
+          ctx.fillRect(x+i,y+j,step,step);
         }
 
-        ctx.fillStyle=color;
-        ctx.fillRect(x+i,y+j,step,step);
+        if(pulse){
+          ctx.fillStyle="rgba(255,255,255,"+pulse+")";
+          ctx.fillRect(x+i,y+j,step,step);
+        }
       }
     }
-  }
-
-  /* TYPE DETAILS */
-
-  if(type==="lava"){
-    ctx.fillStyle=palette[4];
-    for(let k=0;k<5;k++){
-      ctx.fillRect(
-        x - size/2 + (Math.sin(time*2+k)*size/2),
-        y - size/2 + k*6,
-        6,2
-      );
-    }
-  }
-
-  if(type==="gas"){
-    ctx.strokeStyle=palette[2];
-    for(let k=0;k<4;k++){
-      ctx.beginPath();
-      ctx.moveTo(x-size,y-size/2+k*8+Math.sin(time+k)*5);
-      ctx.lineTo(x+size,y-size/2+k*8);
-      ctx.stroke();
-    }
-  }
-
-  if(type==="ice"){
-    ctx.fillStyle="white";
-    ctx.fillRect(x-6,y-2,12,2);
-  }
-
-  if(type==="rock"){
-    ctx.fillStyle=palette[2];
-    ctx.fillRect(x-4,y-4,8,8);
-  }
-
-  if(type==="toxic"){
-    ctx.fillStyle=palette[3];
-    ctx.beginPath();
-    ctx.arc(x,y,4+Math.sin(time*3)*2,0,Math.PI*2);
-    ctx.fill();
-  }
-
-  if(type==="ocean"){
-    ctx.strokeStyle="white";
-    ctx.beginPath();
-    ctx.arc(x,y,size-5,0,Math.PI);
-    ctx.stroke();
   }
 }
 
@@ -262,13 +231,13 @@ let time=0;
 function draw(){
   requestAnimationFrame(draw);
   ctx.clearRect(0,0,w,h);
-  time+=0.01;
+  time+=0.02;
 
   layers.forEach((l,i)=>{
     stars[i].forEach(s=>{
       s.y+=l.speed;
       if(s.y>h) s.y=0;
-      ctx.fillStyle="#ffffff";
+      ctx.fillStyle="#fff";
       ctx.fillRect(s.x,s.y,l.size,l.size);
     });
   });
@@ -277,38 +246,36 @@ function draw(){
   const step=Math.PI*2/songs.length;
   const radius = zoomed!==null ? 0 : 180;
 
-  let audioLevel = currentAudio ? Math.abs(Math.sin(time*10))*0.5 : 0;
+  let audioLevel = currentAudio ? Math.abs(Math.sin(time*8)) : 0;
 
   songs.forEach((s,i)=>{
     const angle=i*step;
 
-    let baseX = w/2 + Math.cos(angle)*radius;
-    let baseY = h/2 + Math.sin(angle)*radius;
+    let x=w/2 + Math.cos(angle)*radius;
+    let y=h/2 + Math.sin(angle)*radius;
 
-    // magnetic hover
+    let size = 25;
+
+    if(hovered===i) size = 30;
+    if(zoomed===i) size = 90;
+
+    let react = (zoomed===i) ? audioLevel : 0;
+
+    pixelPlanet(x,y,size,[255,255,255],react);
+
+    // glow
     if(hovered===i){
-      baseX += (w/2 - baseX)*0.2;
-      baseY += (h/2 - baseY)*0.2;
+      ctx.shadowBlur=20;
+      ctx.shadowColor="white";
+    } else {
+      ctx.shadowBlur=0;
     }
 
-    let size = (zoomed===i)?80:25;
-
-    const palettes = {
-      lava:["#300","#700","#f00","#ff6600","#ff0"],
-      ice:["#88f","#ccf","#eef","#fff","#ccf"],
-      gas:["#aa6","#dd9","#ffb","#fff","#dd9"],
-      rock:["#444","#666","#999","#bbb","#777"],
-      toxic:["#303","#606","#0f0","#0ff","#6f6"],
-      ocean:["#036","#069","#0af","#0ff","#6cf"]
-    };
-
-    pixelPlanet(baseX,baseY,size,palettes[s.type],s.type,time,audioLevel);
-
     s.ui.style.display = (zoomed!==null && zoomed!==i) ? "none":"block";
-    s.ui.style.left=baseX+"px";
-    s.ui.style.top=(baseY+60)+"px";
+    s.ui.style.left=x+"px";
+    s.ui.style.top=(y+60)+"px";
 
-    s.x=baseX; s.y=baseY;
+    s.x=x; s.y=y;
   });
 }
 draw();
@@ -336,6 +303,8 @@ canvas.addEventListener("click", e => {
       if(zoomed===i){
         zoomed=null;
         overlay.classList.remove("active");
+        if(currentAudio) currentAudio.pause();
+        currentIndex=null;
         return;
       }
 
@@ -343,12 +312,6 @@ canvas.addEventListener("click", e => {
       overlay.classList.add("active");
 
       if(!s.src) return;
-
-      if(currentIndex===i){
-        currentAudio.pause();
-        currentIndex=null;
-        return;
-      }
 
       if(currentAudio) currentAudio.pause();
 
@@ -367,9 +330,12 @@ canvas.addEventListener("click", e => {
     }
   });
 
-  if(!clickedPlanet && zoomed !== null){
-    zoomed = null;
+  // click away = EXIT + STOP
+  if(!clickedPlanet && zoomed!==null){
+    zoomed=null;
     overlay.classList.remove("active");
+    if(currentAudio) currentAudio.pause();
+    currentIndex=null;
   }
 });
 
@@ -378,7 +344,6 @@ leftArrow.onclick=()=>{
   currentPage = (currentPage-1+pages.length)%pages.length;
   buildUI();
 };
-
 rightArrow.onclick=()=>{
   currentPage = (currentPage+1)%pages.length;
   buildUI();
