@@ -1,133 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Videos - nattyvancleef</title>
-  <meta charset="UTF-8" />
-
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300&display=swap');
-
-    body {
-      margin: 0;
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      background: #f7f6f4;
-      color: #1a1a1a;
-      overflow: hidden;
-    }
-
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 10;
-    }
-
-    nav ul {
-      display: flex;
-      gap: 30px;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 24px;
-      font-weight: 300;
-      transition: filter 0.3s;
-    }
-
-    nav a:hover {
-      filter: blur(1px);
-    }
-
-    /* NVC */
-    .return-arrow {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      color: #fff;
-      text-decoration: none;
-      font-size: 14px;
-      letter-spacing: 2px;
-      z-index: 10;
-    }
-
-    /* VIDEO BACKGROUND */
-    .hero-background {
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-    }
-
-    .hero-background video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .hero-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.25);
-      z-index: -1;
-    }
-
-    /* ERROR WINDOWS */
-    .window {
-      position: absolute;
-      width: 260px;
-      background: #fff;
-      color: #000;
-      border: 1px solid #ccc;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      cursor: pointer;
-      z-index: 5;
-    }
-
-    .title-bar {
-      background: #eaeaea;
-      padding: 5px 10px;
-      font-size: 12px;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .video-box video {
-      width: 100%;
-      display: block;
-    }
-
-    .close {
-      font-weight: bold;
-    }
-
-  </style>
-</head>
-
-<body>
-
-<a href="index.html" class="return-arrow">NVC</a>
-
-<nav>
-  <ul>
-    <li><a href="photos.html">Photos</a></li>
-    <li><a href="videos.html">Videos</a></li>
-    <li><a href="music.html">Music</a></li>
-    <li><a href="contact.html">Contact</a></li>
-  </ul>
-</nav>
-
-<div class="hero-background">
-  <video autoplay muted loop playsinline>
-    <source src="waterbabiesnvc.mp4" type="video/mp4">
-  </video>
-</div>
-
-<div class="hero-overlay"></div>
-
 <script>
 const videos = [
   "daily commute.mp4",
@@ -141,19 +11,15 @@ const videos = [
 
 const YT_LINK = "https://youtube.com/c/nattyvancleef";
 
-videos.forEach((src, i) => {
+videos.forEach((src) => {
   const win = document.createElement("div");
   win.className = "window";
 
-  // random position
-  win.style.top = Math.random() * (window.innerHeight - 200) + "px";
-  win.style.left = Math.random() * (window.innerWidth - 260) + "px";
+  // keep inside screen bounds properly
+  win.style.top = Math.random() * (window.innerHeight - 180) + "px";
+  win.style.left = Math.random() * (window.innerWidth - 280) + "px";
 
   win.innerHTML = `
-    <div class="title-bar">
-      <span>Error_${i+1}.mp4</span>
-      <span class="close">✕</span>
-    </div>
     <div class="video-box">
       <video muted autoplay loop playsinline>
         <source src="${src}" type="video/mp4">
@@ -169,6 +35,3 @@ videos.forEach((src, i) => {
   document.body.appendChild(win);
 });
 </script>
-
-</body>
-</html>
