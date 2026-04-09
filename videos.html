@@ -81,10 +81,9 @@
       background: #000;
       border: 1px solid rgba(255,255,255,0.1);
       box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      cursor: grab;
+      cursor: pointer;
       z-index: 5;
       transition: transform 0.2s ease;
-      user-select: none; /* Prevent text selection while dragging */
     }
 
     .window:hover {
@@ -95,6 +94,7 @@
       width: 100%;
       display: block;
     }
+
   </style>
 </head>
 
@@ -113,7 +113,7 @@
 
 <div class="hero-background">
   <video autoplay muted loop playsinline>
-    <source src="waterbabiesnvc.mp4" type="video/mp4" />
+    <source src="waterbabiesnvc.mp4" type="video/mp4">
   </video>
 </div>
 
@@ -123,7 +123,8 @@
 const videos = [
   "daily commute.mp4",
   "fishdicks.mp4",
-  "dogdogbigone_2.mp4nvc.mp4",
+  "dogdogbigone_2.mp4",
+  "nvc.mp4",
   "bts.mp4",
   "Youve been Framed.mp4",
   "Startedstealing.mp4"
@@ -131,5 +132,32 @@ const videos = [
 
 const YT_LINK = "https://youtube.com/c/nattyvancleef";
 
-// Function to generate random position within the viewport
-function getRandom
+videos.forEach((src) => {
+  const win = document.createElement("div");
+  win.className = "window";
+
+  // keep windows inside viewport
+  const maxTop = window.innerHeight - 180;
+  const maxLeft = window.innerWidth - 260;
+
+  win.style.top = Math.random() * maxTop + "px";
+  win.style.left = Math.random() * maxLeft + "px";
+
+  win.innerHTML = `
+    <div class="video-box">
+      <video muted autoplay loop playsinline>
+        <source src="${src}" type="video/mp4">
+      </video>
+    </div>
+  `;
+
+  win.addEventListener("click", () => {
+    window.open(YT_LINK, "_blank");
+  });
+
+  document.body.appendChild(win);
+});
+</script>
+
+</body>
+</html>
