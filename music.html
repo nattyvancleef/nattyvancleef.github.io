@@ -201,7 +201,7 @@
   <div class="track" data-audio="audio10">
     <div class="track-title">stickman</div>
     <div class="time">0:00</div>
-    <audio id="audio10" src="stickman .mp3"></audio>
+    <audio id="audio10" src="stickman.mp3"></audio>
     <canvas class="visualiser"></canvas>
   </div>
 
@@ -232,7 +232,8 @@ document.querySelectorAll('.track').forEach(track => {
   window.addEventListener('resize', resize);
 
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  const source = audioCtx.createMediaElementSource(audio);
+  if (!audio) return;
+const source = audioCtx.createMediaElementSource(audio);
   const analyser = audioCtx.createAnalyser();
 
   source.connect(analyser);
