@@ -11,7 +11,7 @@
     overflow: hidden;
     color: #fff;
   }
-  /* Navigation styles (same as your video page) */
+  /* Navigation styles */
   nav {
     position: fixed;
     top: 20px;
@@ -46,12 +46,11 @@
     letter-spacing: 2px;
     z-index: 10;
   }
-  /* Canvas for circle wheel */
+  /* Canvas for wheel */
   #circleCanvas {
     position: fixed;
     inset: 0;
     z-index: 2;
-    cursor: grab;
   }
   /* Seek slider */
   #seekSlider {
@@ -61,7 +60,7 @@
     left: 10%;
     z-index: 3;
   }
-  /* Visualizer (optional) for movement effects */
+  /* Visualizer */
   .visualiser {
     width: 100%;
     height: 60px;
@@ -70,24 +69,6 @@
     bottom: 50px;
     left: 0;
     z-index: 3;
-  }
-  /* Floating song windows style (if needed) */
-  .window {
-    position: absolute;
-    width: 260px;
-    background: #000;
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    cursor: pointer;
-    z-index: 5;
-    transition: transform 0.2s ease;
-  }
-  .window:hover {
-    transform: scale(1.03);
-  }
-  .video-box video {
-    width: 100%;
-    display: block;
   }
 </style>
 </head>
@@ -104,22 +85,13 @@
   </ul>
 </nav>
 
-<!-- Background video -->
-<div class="hero-background">
-  <video autoplay muted loop playsinline>
-    <source src="waterbabiesnvc.mp4" type="video/mp4" />
-  </video>
-</div>
-
-<div class="hero-overlay"></div>
-
-<!-- Canvas for the circular wheel -->
+<!-- Canvas for the wheel -->
 <canvas id="circleCanvas"></canvas>
 
 <!-- Seek slider -->
 <input type="range" id="seekSlider" min="0" max="100" value="0" step="0.1"/>
 
-<!-- Optional visualizer -->
+<!-- Visualizer -->
 <canvas class="visualiser"></canvas>
 
 <script>
@@ -147,19 +119,19 @@ window.addEventListener('resize', () => {
 
 // =================== Data ===================
 const songs = [
-  { name: 'Paul and Djon', src: 'daily commute.mp4', angle: 0 },
-  { name: 'Almostblue', src: 'fishdicks.mp4', angle: Math.PI/3 },
-  { name: 'Architecture', src: 'dogdogbigone_2.mp4', angle: 2*Math.PI/3 },
-  { name: 'bailey', src: 'nvc.mp4', angle: Math.PI },
-  { name: 'BODYOFME', src: 'bts.mp4', angle: 4*Math.PI/3 },
-  { name: 'deathproof', src: 'Youve been Framed.mp4', angle: 5*Math.PI/3 }
+  { name: 'Paul and Djon', src: 'https://raw.githubusercontent.com/yourrepo/daily_commute.mp3', angle: 0 },
+  { name: 'Almostblue', src: 'https://raw.githubusercontent.com/yourrepo/fishdicks.mp3', angle: Math.PI/3 },
+  { name: 'Architecture', src: 'https://raw.githubusercontent.com/yourrepo/dogdogbigone_2.mp3', angle: 2*Math.PI/3 },
+  { name: 'bailey', src: 'https://raw.githubusercontent.com/yourrepo/nvc.mp3', angle: Math.PI },
+  { name: 'BODYOFME', src: 'https://raw.githubusercontent.com/yourrepo/bts.mp3', angle: 4*Math.PI/3 },
+  { name: 'deathproof', src: 'https://raw.githubusercontent.com/yourrepo/youve_been_framed.mp3', angle: 5*Math.PI/3 }
 ];
 
 // Create dummy audio elements
 songs.forEach(s => {
   const a = document.createElement('audio');
   a.id = 'audio_' + s.name.replace(/\s+/g, '_');
-  a.src = 'https://www.w3schools.com/html/horse.mp3'; // placeholder, replace with your actual files
+  a.src = s.src;
   document.body.appendChild(a);
 });
 
@@ -170,12 +142,12 @@ let lastX = 0;
 let currentAudio = null;
 let currentTrack = null;
 
-// =================== Drawing the wheel ===================
+// =================== Draw wheel (static) ===================
 function drawWheel() {
   ctx.clearRect(0, 0, cw, ch);
   ctx.save();
   ctx.translate(cw/2, ch/2);
-  ctx.rotate(wheelRotation);
+  ctx.rotate(wheelRotation); // if you want static, you can comment this out
   const radius = 150;
   songs.forEach(s => {
     const x = Math.cos(s.angle) * radius;
@@ -193,7 +165,7 @@ function drawWheel() {
 }
 drawWheel();
 
-// =================== Animate visualizer ===================
+// =================== Animate visualizer (optional) ===================
 let angle = 0;
 function animateVisualizer() {
   requestAnimationFrame(animateVisualizer);
@@ -210,34 +182,7 @@ function animateVisualizer() {
 }
 animateVisualizer();
 
-// =================== Interaction: Drag to rotate ===================
-circleCanvas.addEventListener('mousedown', (e) => {
-  isDragging = true;
-  lastX = e.clientX;
-});
-window.addEventListener('mouseup', () => { isDragging = false; });
-window.addEventListener('mousemove', (e) => {
-  if (isDragging) {
-    const deltaX = e.clientX - lastX;
-    wheelRotation += deltaX * 0.01;
-    lastX = e.clientX;
-  }
-});
-// Touch support
-circleCanvas.addEventListener('touchstart', (e) => {
-  isDragging = true;
-  lastX = e.touches[0].clientX;
-});
-window.addEventListener('touchend', () => { isDragging = false; });
-window.addEventListener('touchmove', (e) => {
-  if (isDragging) {
-    const deltaX = e.touches[0].clientX - lastX;
-    wheelRotation += deltaX * 0.01;
-    lastX = e.touches[0].clientX;
-  }
-});
-
-// =================== Detect click on wheel ===================
+// =================== Interaction: click circles ===================
 circleCanvas.addEventListener('click', (e) => {
   const rect = circleCanvas.getBoundingClientRect();
   const x = e.clientX - rect.left - cw/2;
@@ -256,23 +201,19 @@ circleCanvas.addEventListener('click', (e) => {
     }
   });
   if (selectedSong) {
-    selectSong(selectedSong);
+    // Play selected song
+    if (currentAudio) {
+      currentAudio.pause();
+    }
+    const audioId = 'audio_' + selectedSong.name.replace(/\s+/g, '_');
+    currentAudio = document.getElementById(audioId);
+    currentAudio.currentTime = 0;
+    currentAudio.play();
   }
 });
 
-// =================== Play song function ===================
-function selectSong(song) {
-  // Stop previous
-  if (currentAudio) {
-    currentAudio.pause();
-  }
-  // Find the audio element
-  const audioId = 'audio_' + song.name.replace(/\s+/g, '_');
-  currentAudio = document.getElementById(audioId);
-  currentAudio.currentTime = 0;
-  currentAudio.play();
-  currentTrack = song;
-}
+// =================== Remove drag to spin ===================
+// (Just comment out or delete the drag event listeners for static wheel)
 
 // =================== Slider control ===================
 const seekSlider = document.getElementById('seekSlider');
@@ -291,15 +232,6 @@ seekSlider.addEventListener('input', () => {
     currentAudio.currentTime = seekSlider.value;
   }
 });
-if (currentAudio) {
-  currentAudio.addEventListener('timeupdate', () => {
-    seekSlider.value = currentAudio.currentTime;
-  });
-}
-
-// =================== Keep the UI intact ===================
-// No additional floating windows here; your navigation and background stay as is.
 </script>
-
 </body>
 </html>
