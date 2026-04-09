@@ -5,13 +5,11 @@
 <title>Music - nattyvancleef</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300&display=swap');
-
 body {
   margin: 0;
   background: #000;
   color: #fff;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   overflow: hidden;
 }
 
@@ -41,7 +39,6 @@ nav a:hover { filter: blur(1px); }
   left: 20px;
   color: #fff;
   text-decoration: none;
-  font-size: 14px;
 }
 
 /* UI */
@@ -73,15 +70,14 @@ nav a:hover { filter: blur(1px); }
 /* arrows */
 .arrow {
   position: fixed;
-  bottom: 80px;
-  font-size: 28px;
+  bottom: 120px;
+  font-size: 24px;
   cursor: pointer;
-  user-select: none;
 }
-#leftArrow { left: 45%; }
-#rightArrow { right: 45%; }
+#leftArrow { left: 48%; }
+#rightArrow { right: 48%; }
 
-/* zoom overlay */
+/* overlay */
 .overlay {
   position: fixed;
   inset: 0;
@@ -112,8 +108,7 @@ nav a:hover { filter: blur(1px); }
 
 <div id="leftArrow" class="arrow">←</div>
 <div id="rightArrow" class="arrow">→</div>
-
-<div class="overlay" id="overlay"></div>
+<div id="overlay" class="overlay"></div>
 
 <canvas id="canvas"></canvas>
 
@@ -144,27 +139,22 @@ let stars = layers.map(l =>
 );
 
 /* SONGS */
-const pages = [
-[
+const pages = [[
 { name:"Paul and Djon", src:"paul and djon.mp3", type:"lava" },
 { name:"Almostblue", src:"Almostbloue.mp3", type:"ice" },
 { name:"Architecture", src:"Architecture2.mp3", type:"gas" },
 { name:"bailey", src:"bailey3.mp3", type:"rock" },
 { name:"BODYOFME", src:"BODYOFME RM.mp3", type:"toxic" },
 { name:"deathproof", src:"deathproof2.mp3", type:"ocean" }
-],
-[
-{ name:"track 7", src:"", type:"lava" },
-{ name:"track 8", src:"", type:"ice" }
-]
-];
+]];
 
 let currentPage = 0;
 let currentAudio = null;
 let currentIndex = null;
 let zoomed = null;
+let hovered = null;
 
-/* UI BUILD */
+/* UI */
 function buildUI(){
   document.querySelectorAll(".track-ui").forEach(e=>e.remove());
 
@@ -192,56 +182,73 @@ function buildUI(){
 }
 buildUI();
 
-/* PLANET DRAWERS */
-function drawPlanet(x,y,size,type){
+/* PIXEL PLANET */
+function pixelPlanet(x,y,size,palette,type,time,audioLevel){
+
+  const step=4;
+
+  for(let i=-size;i<size;i+=step){
+    for(let j=-size;j<size;j+=step){
+      if(i*i+j*j < size*size){
+
+        let color = palette[0];
+
+        // dithering
+        if((i+j)%8===0) color = palette[1];
+        if((i-j)%10===0) color = palette[2];
+
+        // audio pulse
+        if(audioLevel>0.2 && Math.random()<audioLevel){
+          color = palette[3];
+        }
+
+        ctx.fillStyle=color;
+        ctx.fillRect(x+i,y+j,step,step);
+      }
+    }
+  }
+
+  /* TYPE DETAILS */
 
   if(type==="lava"){
-    ctx.fillStyle="#ff3b3b";
-    ctx.beginPath(); ctx.arc(x,y,size,0,Math.PI*2); ctx.fill();
-    ctx.strokeStyle="orange";
-    for(let i=0;i<5;i++){
+    ctx.fillStyle=palette[4];
+    for(let k=0;k<5;k++){
+      ctx.fillRect(
+        x - size/2 + (Math.sin(time*2+k)*size/2),
+        y - size/2 + k*6,
+        6,2
+      );
+    }
+  }
+
+  if(type==="gas"){
+    ctx.strokeStyle=palette[2];
+    for(let k=0;k<4;k++){
       ctx.beginPath();
-      ctx.moveTo(x-size/2+Math.random()*size,y-size/2+Math.random()*size);
-      ctx.lineTo(x-size/2+Math.random()*size,y-size/2+Math.random()*size);
+      ctx.moveTo(x-size,y-size/2+k*8+Math.sin(time+k)*5);
+      ctx.lineTo(x+size,y-size/2+k*8);
       ctx.stroke();
     }
   }
 
   if(type==="ice"){
-    ctx.fillStyle="#aeeaff";
-    ctx.beginPath(); ctx.arc(x,y,size,0,Math.PI*2); ctx.fill();
     ctx.fillStyle="white";
-    ctx.fillRect(x-5,y-5,10,2);
-  }
-
-  if(type==="gas"){
-    ctx.fillStyle="#ffd93b";
-    ctx.beginPath(); ctx.arc(x,y,size,0,Math.PI*2); ctx.fill();
-    ctx.strokeStyle="rgba(255,255,255,0.4)";
-    for(let i=0;i<3;i++){
-      ctx.beginPath();
-      ctx.arc(x,y,size-i*5,0,Math.PI);
-      ctx.stroke();
-    }
+    ctx.fillRect(x-6,y-2,12,2);
   }
 
   if(type==="rock"){
-    ctx.fillStyle="#888";
-    ctx.beginPath(); ctx.arc(x,y,size,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle="#555";
-    ctx.beginPath(); ctx.arc(x-5,y-5,5,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=palette[2];
+    ctx.fillRect(x-4,y-4,8,8);
   }
 
   if(type==="toxic"){
-    ctx.fillStyle="#b84dff";
-    ctx.beginPath(); ctx.arc(x,y,size,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle="#00ffcc";
-    ctx.fillRect(x-3,y-3,6,6);
+    ctx.fillStyle=palette[3];
+    ctx.beginPath();
+    ctx.arc(x,y,4+Math.sin(time*3)*2,0,Math.PI*2);
+    ctx.fill();
   }
 
   if(type==="ocean"){
-    ctx.fillStyle="#3b8aff";
-    ctx.beginPath(); ctx.arc(x,y,size,0,Math.PI*2); ctx.fill();
     ctx.strokeStyle="white";
     ctx.beginPath();
     ctx.arc(x,y,size-5,0,Math.PI);
@@ -249,54 +256,91 @@ function drawPlanet(x,y,size,type){
   }
 }
 
-/* DRAW LOOP */
+/* DRAW */
+let time=0;
+
 function draw(){
   requestAnimationFrame(draw);
   ctx.clearRect(0,0,w,h);
+  time+=0.01;
 
   layers.forEach((l,i)=>{
     stars[i].forEach(s=>{
       s.y+=l.speed;
       if(s.y>h) s.y=0;
+      ctx.fillStyle="#ffffff";
       ctx.fillRect(s.x,s.y,l.size,l.size);
     });
   });
 
   const songs=pages[currentPage];
   const step=Math.PI*2/songs.length;
-  const radius= zoomed!==null ? 0 : 180;
+  const radius = zoomed!==null ? 0 : 180;
+
+  let audioLevel = currentAudio ? Math.abs(Math.sin(time*10))*0.5 : 0;
 
   songs.forEach((s,i)=>{
     const angle=i*step;
-    let x=w/2 + Math.cos(angle)*radius;
-    let y=h/2 + Math.sin(angle)*radius;
+
+    let baseX = w/2 + Math.cos(angle)*radius;
+    let baseY = h/2 + Math.sin(angle)*radius;
+
+    // magnetic hover
+    if(hovered===i){
+      baseX += (w/2 - baseX)*0.2;
+      baseY += (h/2 - baseY)*0.2;
+    }
 
     let size = (zoomed===i)?80:25;
 
-    drawPlanet(x,y,size,s.type);
+    const palettes = {
+      lava:["#300","#700","#f00","#ff6600","#ff0"],
+      ice:["#88f","#ccf","#eef","#fff","#ccf"],
+      gas:["#aa6","#dd9","#ffb","#fff","#dd9"],
+      rock:["#444","#666","#999","#bbb","#777"],
+      toxic:["#303","#606","#0f0","#0ff","#6f6"],
+      ocean:["#036","#069","#0af","#0ff","#6cf"]
+    };
 
-    s.ui.style.display = (zoomed!==null && zoomed!==i) ? "none" : "block";
-    s.ui.style.left=x+"px";
-    s.ui.style.top=(y+60)+"px";
+    pixelPlanet(baseX,baseY,size,palettes[s.type],s.type,time,audioLevel);
 
-    s.x=x; s.y=y;
+    s.ui.style.display = (zoomed!==null && zoomed!==i) ? "none":"block";
+    s.ui.style.left=baseX+"px";
+    s.ui.style.top=(baseY+60)+"px";
+
+    s.x=baseX; s.y=baseY;
   });
 }
 draw();
 
+/* HOVER */
+canvas.addEventListener("mousemove",e=>{
+  hovered=null;
+  pages[currentPage].forEach((s,i)=>{
+    if(Math.hypot(e.clientX-s.x,e.clientY-s.y)<30){
+      hovered=i;
+    }
+  });
+});
+
 /* CLICK */
-canvas.addEventListener("click",e=>{
+canvas.addEventListener("click", e => {
+
+  let clickedPlanet = false;
+
   pages[currentPage].forEach((s,i)=>{
     if(Math.hypot(e.clientX-s.x,e.clientY-s.y)<30){
 
+      clickedPlanet = true;
+
       if(zoomed===i){
         zoomed=null;
-        document.getElementById("overlay").classList.remove("active");
+        overlay.classList.remove("active");
         return;
       }
 
       zoomed=i;
-      document.getElementById("overlay").classList.add("active");
+      overlay.classList.add("active");
 
       if(!s.src) return;
 
@@ -322,15 +366,20 @@ canvas.addEventListener("click",e=>{
       };
     }
   });
+
+  if(!clickedPlanet && zoomed !== null){
+    zoomed = null;
+    overlay.classList.remove("active");
+  }
 });
 
 /* ARROWS */
-document.getElementById("leftArrow").onclick=()=>{
+leftArrow.onclick=()=>{
   currentPage = (currentPage-1+pages.length)%pages.length;
   buildUI();
 };
 
-document.getElementById("rightArrow").onclick=()=>{
+rightArrow.onclick=()=>{
   currentPage = (currentPage+1)%pages.length;
   buildUI();
 };
