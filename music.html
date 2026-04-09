@@ -3,231 +3,241 @@
 <head>
 <meta charset="UTF-8" />
 <title>Music - nattyvancleef</title>
+
 <style>
-  body {
-    margin: 0;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    background: #000;
-    overflow: hidden;
-    color: #fff;
-  }
-  /* Navigation styles */
-  nav {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 10;
-  }
-  nav ul {
-    display: flex;
-    gap: 30px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  nav a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 24px;
-    font-weight: 300;
-    transition: filter 0.3s;
-  }
-  nav a:hover {
-    filter: blur(1px);
-  }
-  /* NVC arrow */
-  .return-arrow {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    color: #fff;
-    text-decoration: none;
-    font-size: 14px;
-    letter-spacing: 2px;
-    z-index: 10;
-  }
-  /* Canvas for wheel */
-  #circleCanvas {
-    position: fixed;
-    inset: 0;
-    z-index: 2;
-  }
-  /* Seek slider */
-  #seekSlider {
-    position: fixed;
-    bottom: 10px;
-    width: 80%;
-    left: 10%;
-    z-index: 3;
-  }
-  /* Visualizer */
-  .visualiser {
-    width: 100%;
-    height: 60px;
-    display: block;
-    position: fixed;
-    bottom: 50px;
-    left: 0;
-    z-index: 3;
-  }
+body {
+  margin: 0;
+  background: #000;
+  color: #fff;
+  font-family: Helvetica, Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}
+nav ul {
+  display: flex;
+  gap: 30px;
+  list-style: none;
+}
+nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 22px;
+}
+
+.return-arrow {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  color: white;
+  text-decoration: none;
+}
+
+/* CANVAS */
+canvas {
+  position: fixed;
+  inset: 0;
+}
+
+/* SLIDERS */
+#seekSlider {
+  position: fixed;
+  bottom: 10px;
+  width: 70%;
+  left: 15%;
+}
+
+#pageSlider {
+  position: fixed;
+  bottom: 40px;
+  width: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+}
 </style>
 </head>
+
 <body>
 
 <a href="index.html" class="return-arrow">NVC</a>
 
 <nav>
-  <ul>
-    <li><a href="photos.html">Photos</a></li>
-    <li><a href="videos.html">Videos</a></li>
-    <li><a href="music.html">Music</a></li>
-    <li><a href="contact.html">Contact</a></li>
-  </ul>
+<ul>
+<li><a href="photos.html">Photos</a></li>
+<li><a href="videos.html">Videos</a></li>
+<li><a href="music.html">Music</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
 </nav>
 
-<!-- Canvas for the wheel -->
-<canvas id="circleCanvas"></canvas>
-
-<!-- Seek slider -->
-<input type="range" id="seekSlider" min="0" max="100" value="0" step="0.1"/>
-
-<!-- Visualizer -->
-<canvas class="visualiser"></canvas>
+<canvas id="canvas"></canvas>
+<input type="range" id="pageSlider" min="0" max="1" step="1" value="0">
+<input type="range" id="seekSlider" min="0" max="100" value="0">
 
 <script>
-// =================== Setup ===================
-const circleCanvas = document.getElementById('circleCanvas');
-const ctx = circleCanvas.getContext('2d');
-const visualizerCanvas = document.querySelector('.visualiser');
-const vCtx = visualizerCanvas.getContext('2d');
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 
-let cw = window.innerWidth;
-let ch = window.innerHeight;
-circleCanvas.width = cw;
-circleCanvas.height = ch;
-visualizerCanvas.width = cw;
-visualizerCanvas.height = 60;
+let w = canvas.width = window.innerWidth;
+let h = canvas.height = window.innerHeight;
 
-// Resize handler
-window.addEventListener('resize', () => {
-  cw = window.innerWidth;
-  ch = window.innerHeight;
-  circleCanvas.width = cw;
-  circleCanvas.height = ch;
-  visualizerCanvas.width = cw;
+window.addEventListener("resize", () => {
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
 });
 
-// =================== Song Data ===================
-const songs = [
-  { name: 'Paul and Djon', src: 'https://raw.githubusercontent.com/nattyvancleef/nattyvancleef.github.io/main/deathproof2.mp3', angle: 0 },
-  { name: 'Almostblue', src: 'https://raw.githubusercontent.com/nattyvancleef/nattyvancleef.github.io/main/fishdicks.mp3', angle: Math.PI/3 },
-  { name: 'Architecture', src: 'https://raw.githubusercontent.com/nattyvancleef/nattyvancleef.github.io/main/dogdogbigone_2.mp3', angle: 2*Math.PI/3 },
-  { name: 'bailey', src: 'https://raw.githubusercontent.com/nattyvancleef/nattyvancleef.github.io/main/nvc.mp3', angle: Math.PI },
-  { name: 'BODYOFME', src: 'https://raw.githubusercontent.com/nattyvancleef/nattyvancleef.github.io/main/bts.mp3', angle: 4*Math.PI/3 },
-  { name: 'deathproof', src: 'https://raw.githubusercontent.com/nattyvancleef/nattyvancleef.github.io/main/youve_been_framed.mp3', angle: 5*Math.PI/3 }
+/* ================= SONG DATA ================= */
+
+const pages = [
+[
+{ name:"Paul and Djon", src:"paul and djon.mp3" },
+{ name:"Almostblue", src:"Almostbloue.mp3" },
+{ name:"Architecture", src:"Architecture2.mp3" },
+{ name:"bailey", src:"bailey3.mp3" },
+{ name:"BODYOFME", src:"BODYOFME RM.mp3" },
+{ name:"deathproof", src:"deathproof2.mp3" }
+],
+[
+{ name:"keep your word", src:"Keep Your Word.mp3" },
+{ name:"pawnshop.bt", src:"pawnshop.bt.mp3" },
+{ name:"said she", src:"said she.2.mp3" },
+{ name:"stickman", src:"stickman.mp3" },
+{ name:"vikingsaga", src:"vikingsaga.mp3" }
+]
 ];
 
-// Create dummy audio elements
-songs.forEach(s => {
-  const a = document.createElement('audio');
-  a.id = 'audio_' + s.name.replace(/\s+/g, '_');
-  a.src = s.src;
-  document.body.appendChild(a);
-});
+let currentPage = 0;
 
-// =================== Variables ===================
+/* ================= AUDIO ================= */
+
 let currentAudio = null;
 
-// =================== Draw static wheel ===================
-function drawWheel() {
-  ctx.clearRect(0, 0, cw, ch);
+/* ================= VISUAL ================= */
+
+let rotation = 0;
+let hovered = null;
+let zoom = 0;
+
+const colors = [
+"#ff3b3b","#00d4ff","#ffd93b",
+"#8aff3b","#ff7af6","#3b8aff"
+];
+
+/* ================= DRAW ================= */
+
+function draw() {
+  requestAnimationFrame(draw);
+  ctx.clearRect(0,0,w,h);
+
+  rotation += 0.002;
+
+  const songs = pages[currentPage];
+  const step = Math.PI*2 / songs.length;
+
   ctx.save();
-  ctx.translate(cw/2, ch/2);
-  ctx.rotate(0); // static, not spinning
-  const radius = 150;
-  songs.forEach(s => {
-    const x = Math.cos(s.angle) * radius;
-    const y = Math.sin(s.angle) * radius;
+  ctx.translate(w/2, h/2);
+  ctx.rotate(rotation);
+
+  songs.forEach((s,i)=>{
+    const angle = i*step;
+    const r = 180;
+
+    let x = Math.cos(angle)*r;
+    let y = Math.sin(angle)*r;
+
+    let size = 25;
+
+    if (hovered === i) size = 35;
+
+    // PLANET
     ctx.beginPath();
-    ctx.arc(x, y, 20, 0, Math.PI*2);
-    ctx.fillStyle = 'white';
+    ctx.arc(x,y,size,0,Math.PI*2);
+    ctx.fillStyle = colors[i%colors.length];
+    ctx.shadowBlur = hovered===i ? 20 : 0;
+    ctx.shadowColor = colors[i%colors.length];
     ctx.fill();
 
-    ctx.fillStyle = 'yellow';
-    ctx.font = '12px Helvetica Neue';
-    ctx.fillText(s.name, x - 20, y + 35);
+    // RING
+    ctx.beginPath();
+    ctx.ellipse(x,y,size+10,8,0.5,0,Math.PI*2);
+    ctx.strokeStyle = "white";
+    ctx.stroke();
+
+    // TEXT
+    ctx.shadowBlur = 0;
+    ctx.fillStyle="yellow";
+    ctx.textAlign="center";
+    ctx.fillText(s.name,x,y+50);
+
+    // STORE position for click
+    s._x = x;
+    s._y = y;
   });
+
   ctx.restore();
 }
-drawWheel();
 
-// =================== Animate visualizer ===================
-let angle = 0;
-function animateVisualizer() {
-  requestAnimationFrame(animateVisualizer);
-  vCtx.clearRect(0, 0, cw, 60);
-  for (let i=0; i<5; i++) {
-    const x = cw/2 + Math.sin(angle + i) * (cw/3);
-    const y = 30 + Math.cos(angle + i) * 10;
-    vCtx.beginPath();
-    vCtx.arc(x, y, 10 + Math.sin(angle + i*2)*5, 0, Math.PI*2);
-    vCtx.fillStyle = `rgba(255,255,255,${0.2 + Math.sin(angle + i)*0.3})`;
-    vCtx.fill();
-  }
-  angle += 0.02;
-}
-animateVisualizer();
+draw();
 
-// =================== Click on wheel to select song ===================
-circleCanvas.addEventListener('click', (e) => {
-  const rect = circleCanvas.getBoundingClientRect();
-  const x = e.clientX - rect.left - cw/2;
-  const y = e.clientY - rect.top - ch/2;
-  const clickAngle = Math.atan2(y, x);
+/* ================= MOUSE ================= */
 
-  // Find closest song
-  let minDiff = Math.PI;
-  let selectedSong = null;
-  songs.forEach(s => {
-    let diff = Math.abs(s.angle - clickAngle);
-    if (diff > Math.PI) diff = Math.abs(diff - 2*Math.PI);
-    if (diff < minDiff) {
-      minDiff = diff;
-      selectedSong = s;
-    }
+canvas.addEventListener("mousemove", e=>{
+  const mx = e.clientX - w/2;
+  const my = e.clientY - h/2;
+
+  hovered = null;
+
+  const songs = pages[currentPage];
+
+  songs.forEach((s,i)=>{
+    const dx = mx - s._x;
+    const dy = my - s._y;
+    if (Math.hypot(dx,dy) < 30) hovered = i;
   });
-  if (selectedSong) {
-    // Stop previous song if playing
-    if (currentAudio) {
-      currentAudio.pause();
-    }
-    // Play selected song
-    const audioId = 'audio_' + selectedSong.name.replace(/\s+/g, '_');
-    currentAudio = document.getElementById(audioId);
-    if (currentAudio) {
-      currentAudio.currentTime = 0;
-      currentAudio.play();
-    }
-  }
 });
 
-// =================== Slider control ===================
-const seekSlider = document.getElementById('seekSlider');
+canvas.addEventListener("click", ()=>{
+  if (hovered === null) return;
 
-function updateSlider() {
-  if (currentAudio && currentAudio.duration) {
-    seekSlider.max = currentAudio.duration;
-    seekSlider.value = currentAudio.currentTime;
+  const song = pages[currentPage][hovered];
+
+  if (currentAudio) currentAudio.pause();
+
+  currentAudio = new Audio(song.src);
+  currentAudio.play();
+
+  zoom = hovered;
+});
+
+/* ================= SLIDERS ================= */
+
+document.getElementById("pageSlider").addEventListener("input", e=>{
+  currentPage = parseInt(e.target.value);
+});
+
+const seek = document.getElementById("seekSlider");
+
+function updateSeek(){
+  if(currentAudio){
+    seek.max = currentAudio.duration || 0;
+    seek.value = currentAudio.currentTime;
   }
-  requestAnimationFrame(updateSlider);
+  requestAnimationFrame(updateSeek);
 }
-updateSlider();
+updateSeek();
 
-seekSlider.addEventListener('input', () => {
-  if (currentAudio) {
-    currentAudio.currentTime = seekSlider.value;
+seek.addEventListener("input", ()=>{
+  if(currentAudio){
+    currentAudio.currentTime = seek.value;
   }
 });
+
 </script>
+
 </body>
 </html>
