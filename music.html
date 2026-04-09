@@ -9,9 +9,9 @@
 
 body {
   margin: 0;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
   background: #000;
   color: #fff;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
   overflow: hidden;
 }
 
@@ -33,9 +33,7 @@ nav a {
   font-size: 24px;
   font-weight: 300;
 }
-nav a:hover {
-  filter: blur(1px);
-}
+nav a:hover { filter: blur(1px); }
 
 .return-arrow {
   position: fixed;
@@ -48,25 +46,20 @@ nav a:hover {
   z-index: 10;
 }
 
-/* CANVAS */
-canvas {
-  position: fixed;
-  inset: 0;
-}
-
 /* TRACK UI */
 .track-ui {
   position: absolute;
-  text-align: center;
   transform: translate(-50%, -50%);
   width: 130px;
+  text-align: center;
   font-size: 12px;
 }
 
 .progress {
-  height: 4px;
+  height: 5px;
   background: rgba(255,255,255,0.2);
   margin-top: 5px;
+  cursor: pointer;
 }
 
 .progress-bar {
@@ -79,6 +72,14 @@ canvas {
   font-size: 10px;
   opacity: 0.6;
   text-align: right;
+}
+
+/* SLIDER */
+#pageSlider {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 </style>
 </head>
@@ -97,6 +98,7 @@ canvas {
 </nav>
 
 <canvas id="canvas"></canvas>
+<input type="range" id="pageSlider" min="0" max="2" step="1" value="0">
 
 <script>
 const canvas = document.getElementById("canvas");
@@ -110,149 +112,195 @@ window.addEventListener("resize", () => {
   h = canvas.height = window.innerHeight;
 });
 
-/* ⭐ STARFIELD */
-let stars = Array.from({length: 150}, () => ({
-  x: Math.random()*w,
-  y: Math.random()*h,
-  r: Math.random()*2,
-  speed: Math.random()*0.3
-}));
+/* ⭐ PARALLAX STARS */
+const layers = [
+  {count:60, speed:0.2, size:1},
+  {count:40, speed:0.5, size:2},
+  {count:25, speed:1, size:3}
+];
 
-/* SONGS */
-const songs = [
+let stars = layers.map(layer =>
+  Array.from({length:layer.count},()=>({
+    x:Math.random()*w,
+    y:Math.random()*h
+  }))
+);
+
+/* SONG PAGES */
+const pages = [
+[
 { name:"Paul and Djon", src:"paul and djon.mp3" },
 { name:"Almostblue", src:"Almostbloue.mp3" },
 { name:"Architecture", src:"Architecture2.mp3" },
 { name:"bailey", src:"bailey3.mp3" },
 { name:"BODYOFME", src:"BODYOFME RM.mp3" },
 { name:"deathproof", src:"deathproof2.mp3" }
+],
+[
+{ name:"track 7", src:"" },
+{ name:"track 8", src:"" },
+{ name:"track 9", src:"" },
+{ name:"track 10", src:"" }
+],
+[
+{ name:"track 11", src:"" },
+{ name:"track 12", src:"" }
+]
 ];
 
-const radius = 180;
-
+let currentPage = 0;
 let currentAudio = null;
 let currentIndex = null;
 let hovered = null;
 
-/* CREATE UI */
-songs.forEach((s,i)=>{
-  const ui = document.createElement("div");
-  ui.className = "track-ui";
-  ui.innerHTML = `
-    <div>${s.name}</div>
-    <div class="progress"><div class="progress-bar"></div></div>
-    <div class="time">0:00</div>
-  `;
-  document.body.appendChild(ui);
-  s.ui = ui;
-  s.bar = ui.querySelector(".progress-bar");
-  s.time = ui.querySelector(".time");
-});
+/* UI */
+function buildUI(){
+  document.querySelectorAll(".track-ui").forEach(e=>e.remove());
 
-/* DRAW */
+  pages[currentPage].forEach(s=>{
+    const ui = document.createElement("div");
+    ui.className="track-ui";
+    ui.innerHTML=`
+      <div>${s.name}</div>
+      <div class="progress"><div class="progress-bar"></div></div>
+      <div class="time">0:00</div>
+    `;
+    document.body.appendChild(ui);
+    s.ui=ui;
+    s.bar=ui.querySelector(".progress-bar");
+    s.time=ui.querySelector(".time");
+
+    // SCRUB
+    ui.querySelector(".progress").addEventListener("click", e=>{
+      if(!currentAudio) return;
+      const rect = e.target.getBoundingClientRect();
+      const percent = (e.clientX-rect.left)/rect.width;
+      currentAudio.currentTime = percent * currentAudio.duration;
+    });
+  });
+}
+buildUI();
+
+/* DRAW PIXEL PLANET */
+function drawPlanet(x,y,size,color){
+  const step=4;
+
+  for(let i=-size;i<size;i+=step){
+    for(let j=-size;j<size;j+=step){
+      if(i*i+j*j < size*size){
+        let shade = Math.random()*0.2;
+        ctx.fillStyle=color;
+        ctx.fillRect(x+i,y+j,step,step);
+
+        // shadow side
+        if(i<0){
+          ctx.fillStyle="rgba(0,0,0,0.2)";
+          ctx.fillRect(x+i,y+j,step,step);
+        }
+
+        // highlight
+        if(i>0 && j<0){
+          ctx.fillStyle="rgba(255,255,255,0.15)";
+          ctx.fillRect(x+i,y+j,step,step);
+        }
+      }
+    }
+  }
+}
+
+/* DRAW LOOP */
 function draw(){
   requestAnimationFrame(draw);
   ctx.clearRect(0,0,w,h);
 
-  /* stars */
-  stars.forEach(s=>{
-    s.y += s.speed;
-    if(s.y > h) s.y = 0;
-    ctx.fillStyle="white";
-    ctx.fillRect(s.x,s.y,s.r,s.r);
+  // stars
+  layers.forEach((layer,li)=>{
+    stars[li].forEach(s=>{
+      s.y += layer.speed;
+      if(s.y>h) s.y=0;
+      ctx.fillStyle="white";
+      ctx.fillRect(s.x,s.y,layer.size,layer.size);
+    });
   });
 
+  const songs = pages[currentPage];
   const step = Math.PI*2 / songs.length;
+  const radius = 180;
 
   songs.forEach((s,i)=>{
     const angle = i*step;
-    let x = w/2 + Math.cos(angle)*radius;
-    let y = h/2 + Math.sin(angle)*radius;
+    const x = w/2 + Math.cos(angle)*radius;
+    const y = h/2 + Math.sin(angle)*radius;
 
-    let size = 25;
+    let size = (i===currentIndex)?35:25;
 
-    if(i === hovered) size = 35;
-    if(i === currentIndex) size = 45;
+    drawPlanet(x,y,size,
+      ["#ff3b3b","#00d4ff","#ffd93b","#8aff3b","#ff7af6","#3b8aff"][i%6]
+    );
 
-    /* PLANET */
-    ctx.beginPath();
-    ctx.arc(x,y,size,0,Math.PI*2);
-    ctx.fillStyle = ["#ff3b3b","#00d4ff","#ffd93b","#8aff3b","#ff7af6","#3b8aff"][i%6];
-    ctx.shadowBlur = (i===hovered)?20:0;
-    ctx.shadowColor = "white";
-    ctx.fill();
-
-    ctx.shadowBlur = 0;
-
-    /* CRATERS */
-    for(let j=0;j<3;j++){
-      ctx.fillStyle="rgba(0,0,0,0.2)";
-      ctx.beginPath();
-      ctx.arc(x-10+Math.random()*20,y-10+Math.random()*20,3,0,Math.PI*2);
-      ctx.fill();
-    }
-
-    /* GAS CLOUD */
-    ctx.fillStyle="rgba(255,255,255,0.1)";
-    ctx.beginPath();
-    ctx.arc(x+5,y-5,size*0.6,0,Math.PI*2);
-    ctx.fill();
-
-    /* RING */
+    // ring
     if(i%2===0){
       ctx.beginPath();
-      ctx.ellipse(x,y,size+12,10,0.5,0,Math.PI*2);
+      ctx.ellipse(x,y,size+10,8,0.5,0,Math.PI*2);
       ctx.strokeStyle="white";
       ctx.stroke();
     }
 
-    /* UI POSITION */
     s.ui.style.left = x+"px";
-    s.ui.style.top = (y+60)+"px";
+    s.ui.style.top = (y+55)+"px";
 
-    s.x = x;
-    s.y = y;
+    s.x=x; s.y=y;
   });
 }
 draw();
 
 /* HOVER */
-canvas.addEventListener("mousemove", e=>{
-  hovered = null;
-  songs.forEach((s,i)=>{
-    if(Math.hypot(e.clientX-s.x, e.clientY-s.y)<30){
-      hovered = i;
+canvas.addEventListener("mousemove",e=>{
+  hovered=null;
+  pages[currentPage].forEach((s,i)=>{
+    if(Math.hypot(e.clientX-s.x,e.clientY-s.y)<30){
+      hovered=i;
     }
   });
 });
 
 /* CLICK */
-canvas.addEventListener("click", e=>{
-  songs.forEach((s,i)=>{
-    if(Math.hypot(e.clientX-s.x, e.clientY-s.y)<30){
+canvas.addEventListener("click",e=>{
+  pages[currentPage].forEach((s,i)=>{
+    if(Math.hypot(e.clientX-s.x,e.clientY-s.y)<30){
 
-      if(currentIndex === i){
+      if(!s.src) return;
+
+      if(currentIndex===i){
         currentAudio.pause();
-        currentIndex = null;
+        currentIndex=null;
         return;
       }
 
       if(currentAudio) currentAudio.pause();
 
-      currentAudio = new Audio(s.src);
+      currentAudio=new Audio(s.src);
       currentAudio.play();
-      currentIndex = i;
+      currentIndex=i;
 
-      currentAudio.ontimeupdate = ()=>{
-        const p = currentAudio.currentTime/currentAudio.duration;
-        s.bar.style.width = (p*100)+"%";
+      currentAudio.ontimeupdate=()=>{
+        const p=currentAudio.currentTime/currentAudio.duration;
+        s.bar.style.width=(p*100)+"%";
 
-        let m = Math.floor(currentAudio.currentTime/60);
-        let sec = Math.floor(currentAudio.currentTime%60).toString().padStart(2,"0");
-        s.time.textContent = `${m}:${sec}`;
+        let m=Math.floor(currentAudio.currentTime/60);
+        let sec=Math.floor(currentAudio.currentTime%60).toString().padStart(2,"0");
+        s.time.textContent=`${m}:${sec}`;
       };
     }
   });
+});
+
+/* PAGE SWITCH */
+document.getElementById("pageSlider").addEventListener("input",e=>{
+  currentPage=parseInt(e.target.value);
+  currentIndex=null;
+  if(currentAudio) currentAudio.pause();
+  buildUI();
 });
 </script>
 
