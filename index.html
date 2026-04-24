@@ -15,7 +15,7 @@
       overflow-x: hidden;
     }
 
-    /* NAV (same everywhere now) */
+    /* NAV (desktop unchanged) */
     nav {
       position: fixed;
       top: 20px;
@@ -43,7 +43,7 @@
       filter: blur(1px);
     }
 
-    /* NVC (same system, but subtle on homepage) */
+    /* NVC */
     .return-arrow {
       position: fixed;
       top: 20px;
@@ -53,7 +53,7 @@
       font-size: 14px;
       letter-spacing: 2px;
       z-index: 10;
-      opacity: 0.6; /* subtle since it's already home */
+      opacity: 0.6;
     }
 
     /* HERO VIDEO BACKGROUND */
@@ -69,7 +69,7 @@
       object-fit: cover;
     }
 
-    /* subtle overlay (same as videos page) */
+    /* overlay */
     .hero-overlay {
       position: fixed;
       inset: 0;
@@ -99,9 +99,30 @@
       letter-spacing: 1px;
     }
 
-    @media (max-width:600px){
-      nav a { font-size:18px; }
-      h1 { font-size: 2.5em; }
+    /* MOBILE ONLY (does not affect desktop) */
+    @media (max-width: 600px){
+
+      nav {
+        top: 15px;
+        right: 15px;
+      }
+
+      nav ul {
+        gap: 18px;
+      }
+
+      nav a {
+        font-size: 20px;
+      }
+
+      .return-arrow {
+        font-size: 16px;
+      }
+
+      h1 {
+        font-size: 2.8em;
+        padding: 0 10px;
+      }
     }
 
   </style>
@@ -122,7 +143,7 @@
 
 <!-- Background Video -->
 <div class="hero-background">
-  <video autoplay muted loop playsinline>
+  <video autoplay muted loop playsinline webkit-playsinline preload="auto">
     <source src="ambshighschoolinvert.2.mp4" type="video/mp4" />
   </video>
 </div>
