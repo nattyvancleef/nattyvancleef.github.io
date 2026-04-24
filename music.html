@@ -15,7 +15,7 @@ body {
   overflow: hidden;
 }
 
-/* NAV */
+/* NAV — MATCH INDEX */
 nav {
   position: fixed;
   top: 20px;
@@ -26,21 +26,28 @@ nav ul {
   display: flex;
   gap: 30px;
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 nav a {
   color: #fff;
   text-decoration: none;
   font-size: 24px;
   font-weight: 300;
+  transition: filter 0.3s;
 }
 nav a:hover { filter: blur(1px); }
 
+/* NVC arrow — MATCH INDEX */
 .return-arrow {
   position: fixed;
   top: 20px;
   left: 20px;
+  color: #fff;
+  text-decoration: none;
   font-size: 14px;
   letter-spacing: 2px;
+  z-index: 10;
   opacity: 0.6;
 }
 
@@ -48,32 +55,22 @@ nav a:hover { filter: blur(1px); }
 .track-ui {
   position: absolute;
   transform: translate(-50%, -50%);
-  width: 140px;
   text-align: center;
   font-size: 12px;
   pointer-events: none;
-}
-
-.progress {
-  height: 4px;
-  background: rgba(255,255,255,0.2);
-  margin-top: 5px;
-}
-.progress-bar {
-  height: 100%;
-  width: 0%;
-  background: white;
+  width: 140px;
+  white-space: nowrap;
 }
 
 /* arrows */
 .arrow {
   position: fixed;
-  bottom: 120px;
-  font-size: 24px;
+  bottom: 140px;
+  font-size: 22px;
   cursor: pointer;
 }
-#leftArrow { left: 48%; }
-#rightArrow { right: 48%; }
+#leftArrow { left: 49%; }
+#rightArrow { right: 49%; }
 
 /* overlay */
 .overlay {
@@ -120,7 +117,7 @@ window.addEventListener("resize", () => {
   h = canvas.height = window.innerHeight;
 });
 
-/* STARFIELD (restored) */
+/* STARFIELD — ORIGINAL STYLE */
 const layers = [
   {count:60,speed:0.2,size:1},
   {count:40,speed:0.5,size:2},
@@ -158,7 +155,7 @@ function getBass(){
   return sum / 10 / 255;
 }
 
-/* TRACK DATA (RESTORED) */
+/* TRACKS */
 const pages = [
 [
 { name:"Paul and Djon", src:"paul and djon.mp3" },
@@ -169,13 +166,20 @@ const pages = [
 { name:"deathproof", src:"deathproof2.mp3" }
 ],
 [
-{ name:"track 7", src:"" },
-{ name:"track 8", src:"" },
-{ name:"track 9", src:"" }
+{ name:"...", src:"" },
+{ name:"...", src:"" },
+{ name:"...", src:"" },
+{ name:"...", src:"" },
+{ name:"...", src:"" },
+{ name:"...", src:"" }
 ],
 [
-{ name:"track 10", src:"" },
-{ name:"track 11", src:"" }
+{ name:"...", src:"" },
+{ name:"...", src:"" },
+{ name:"...", src:"" },
+{ name:"...", src:"" },
+{ name:"...", src:"" },
+{ name:"...", src:"" }
 ]
 ];
 
@@ -190,10 +194,10 @@ function buildUI(){
 
   angleOffsets = pages[currentPage].map(()=>0);
 
-  pages[currentPage].forEach(t=>{
+  pages[currentPage].forEach((t,i)=>{
     const ui=document.createElement("div");
     ui.className="track-ui";
-    ui.innerHTML=`<div>${t.name}</div>`;
+    ui.innerHTML = `<div>${t.name}</div>`;
     document.body.appendChild(ui);
     t.ui=ui;
   });
@@ -239,6 +243,7 @@ function draw(){
     stars[i].forEach(s=>{
       s.y+=l.speed;
       if(s.y>h) s.y=0;
+      ctx.fillStyle="#fff";
       ctx.fillRect(s.x,s.y,l.size,l.size);
     });
   });
@@ -253,14 +258,28 @@ function draw(){
     let x=w/2 + Math.cos(angle)*radius;
     let y=h/2 + Math.sin(angle)*radius;
 
-    let size = (zoomed===i)?100:(hovered===i?35:25);
+    let size = (zoomed===i)?110:(hovered===i?35:25);
 
     drawVinyl(x,y,size,i);
 
     s.x=x; s.y=y;
 
-    s.ui.style.left=x+"px";
-    s.ui.style.top=(y+70)+"px";
+    // FIXED TEXT LOGIC
+    if(zoomed!==null){
+      if(zoomed===i){
+        s.ui.style.display="block";
+        s.ui.style.left=w/2+"px";
+        s.ui.style.top=(h/2 + 140)+"px";
+        s.ui.style.fontSize="14px";
+      } else {
+        s.ui.style.display="none";
+      }
+    } else {
+      s.ui.style.display="block";
+      s.ui.style.left=x+"px";
+      s.ui.style.top=(y+70)+"px";
+      s.ui.style.fontSize="12px";
+    }
 
     if(currentAudio && zoomed===i){
       angleOffsets[i]+=0.02;
@@ -274,7 +293,7 @@ canvas.addEventListener("mousemove",e=>{
   hovered=null;
 
   pages[currentPage].forEach((s,i)=>{
-    let size = (zoomed===i)?100:25;
+    let size = (zoomed===i)?110:25;
     if(Math.hypot(e.clientX-s.x,e.clientY-s.y)<size){
       hovered=i;
     }
@@ -301,7 +320,7 @@ canvas.addEventListener("click",e=>{
   let clicked=false;
 
   pages[currentPage].forEach((s,i)=>{
-    let size=(zoomed===i)?100:30;
+    let size=(zoomed===i)?110:30;
 
     if(Math.hypot(e.clientX-s.x,e.clientY-s.y)<size){
 
@@ -334,14 +353,12 @@ canvas.addEventListener("click",e=>{
 /* ARROWS */
 leftArrow.onclick=()=>{
   currentPage=(currentPage-1+pages.length)%pages.length;
-  zoomed=null;
   stopAudio();
   buildUI();
 };
 
 rightArrow.onclick=()=>{
   currentPage=(currentPage+1)%pages.length;
-  zoomed=null;
   stopAudio();
   buildUI();
 };
