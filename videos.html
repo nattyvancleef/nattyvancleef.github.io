@@ -137,10 +137,8 @@ const videos = [
   "Maceos copy.mp4",
   "dogdogbigone_1.mp4",
   "vid_4osc333.mp4",
-  "christmasbreakfast.mp4",
   "mercades.mp4",
   "Olympus.mp4",
-  "golfrun.mp4",
   "golf54.mp4",
   "A&E.mp4",
   "karatemountainboy.mp4"
@@ -203,6 +201,7 @@ function focusWindow(target) {
   const centerY = window.innerHeight / 2 - 90;
 
   windows.forEach(win => {
+    const video = win.querySelector("video");
     win.classList.remove("focused");
 
     let x = parseFloat(win.dataset.x);
@@ -212,14 +211,21 @@ function focusWindow(target) {
       win.style.left = centerX + "px";
       win.style.top = centerY + "px";
       win.classList.add("focused");
+
+      // UNMUTE + PLAY ON FOCUS
+      video.muted = false;
+      video.volume = 1;
+      video.play();
+
     } else {
-      // distance from target
+      // mute others
+      video.muted = true;
+
       const dx = x - target.dataset.x;
       const dy = y - target.dataset.y;
       const dist = Math.sqrt(dx*dx + dy*dy);
 
       if (dist < 300) {
-        // gentle push away
         const push = 80;
         const angle = Math.atan2(dy, dx);
         x += Math.cos(angle) * push;
@@ -231,15 +237,6 @@ function focusWindow(target) {
     }
   });
 }
-
-// reset on background click
-document.body.addEventListener("click", () => {
-  windows.forEach(win => {
-    win.classList.remove("focused");
-    win.style.left = win.dataset.x + "px";
-    win.style.top = win.dataset.y + "px";
-  });
-});
 </script>
 
 </body>
