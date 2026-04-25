@@ -3,129 +3,43 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<title>Photos - nattyvancleef</title>
+<title>Photos</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300&display=swap');
-
 body {
   margin:0;
-  font-family:"Helvetica Neue", Arial, sans-serif;
-  background:#f7f6f4;
-  overflow-x: hidden;
+  font-family: Arial;
 }
 
-/* NAV (desktop unchanged) */
 nav {
   position: fixed;
-  top:20px;
-  right:20px;
-  z-index: 10;
+  top: clamp(15px,3vw,20px);
+  right: clamp(15px,3vw,20px);
 }
 nav ul {
   display:flex;
-  gap:30px;
-  list-style:none;
-  margin:0;
-  padding:0;
+  gap: clamp(12px,3vw,30px);
 }
 nav a {
-  text-decoration:none;
-  color:#000;
-  font-size:24px;
-  font-weight: 300;
-  transition: filter 0.3s;
+  font-size: clamp(18px,5vw,48px);
 }
-nav a:hover { filter: blur(1px); }
 
-/* NVC (desktop unchanged) */
 .nvc {
   position:fixed;
-  top:20px;
-  left:20px;
-  text-decoration:none;
-  color:#000;
-  font-size:14px;
-  letter-spacing:2px;
-  z-index:10;
+  top: clamp(15px,3vw,20px);
+  left: clamp(15px,3vw,20px);
+  font-size: clamp(14px,4vw,32px);
 }
 
-/* GRID */
 .gallery {
-  padding:120px 40px;
+  padding: clamp(80px,10vw,120px) clamp(10px,5vw,40px);
   display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
-  gap:20px;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(120px,30vw,200px),1fr));
+  gap: clamp(8px,2vw,20px);
 }
 
-.gallery img,
-.card img {
+.gallery img {
   width:100%;
-  cursor:pointer;
-  transition:0.3s;
-}
-
-.gallery img:hover,
-.card img:hover {
-  transform:scale(1.02);
-}
-
-.card { width:100%; }
-
-/* VIEWER */
-#viewer {
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.9);
-  display:none;
-  align-items:center;
-  justify-content:center;
-}
-#viewer img {
-  max-width:90%;
-  max-height:90%;
-}
-
-/* ========================= */
-/* MOBILE — EXACT MATCH INDEX */
-/* ========================= */
-
-@media (max-width:600px){
-
-  body {
-    background:#000;
-  }
-
-  nav {
-    top:20px;
-    right:20px;
-  }
-
-  nav ul {
-    gap:24px;
-  }
-
-  nav a {
-    font-size:48px; /* MATCH INDEX */
-    color:#fff;
-  }
-
-  .nvc {
-    top:20px;
-    left:20px;
-    font-size:32px; /* MATCH INDEX */
-    color:#fff;
-    opacity:0.6;
-    letter-spacing:3px;
-  }
-
-  .gallery {
-    padding:100px 15px;
-    gap:12px;
-    grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
-  }
-
 }
 </style>
 </head>
@@ -135,92 +49,18 @@ nav a:hover { filter: blur(1px); }
 <a href="index.html" class="nvc">NVC</a>
 
 <nav>
-  <ul>
-    <li><a href="photos.html">Photos</a></li>
-    <li><a href="videos.html">Videos</a></li>
-    <li><a href="music.html">Music</a></li>
-    <li><a href="contact.html">Contact</a></li>
-  </ul>
+<ul>
+<li><a href="photos.html">Photos</a></li>
+<li><a href="videos.html">Videos</a></li>
+<li><a href="music.html">Music</a></li>
+<li><a href="contact.html">Contact</a></li>
+</ul>
 </nav>
 
 <div class="gallery">
-  <img src="IMG_4222.JPG" />
-  <img src="P1000170.JPG" />
-  <img src="DSCF2287.JPEG" />
-  <img src="DSCF5912.JPEG" />
-
-  <div class="card"><img src="DSCF7323.JPEG"></div>
-  <div class="card"><img src="DSCF7358.JPEG"></div>
-  <div class="card"><img src="DSCF7478.JPEG"></div>
-  <div class="card"><img src="DSCF7770.JPEG"></div>
-  <div class="card"><img src="DSCF7772.JPEG"></div>
-  <div class="card"><img src="DSCF7896.JPEG"></div>
-  <div class="card"><img src="DSCF7960.JPEG"></div>
-  <div class="card"><img src="DSCF8338.JPEG"></div>
-  <div class="card"><img src="DSCF8395.jpg"></div>
-  <div class="card"><img src="DSCF8746.JPEG"></div>
-  <div class="card"><img src="DSCF8777.JPEG"></div>
-  <div class="card"><img src="DSCF8792.JPEG"></div>
-  <div class="card"><img src="DSCF8815.JPEG"></div>
-  <div class="card"><img src="DSCF8852.JPEG"></div>
-  <div class="card"><img src="DSCF9364.JPEG"></div>
-  <div class="card"><img src="DSCF9494.JPEG"></div>
-  <div class="card"><img src="DSCF9962.JPEG"></div>
-  <div class="card"><img src="IMG_0234.JPG"></div>
-  <div class="card"><img src="IMG_0240.JPEG"></div>
-  <div class="card"><img src="IMG_0747.JPEG"></div>
-  <div class="card"><img src="IMG_1374.JPEG"></div>
-  <div class="card"><img src="IMG_1569.JPEG"></div>
-  <div class="card"><img src="IMG_1696.jpg"></div>
-  <div class="card"><img src="IMG_1966.jpg"></div>
-  <div class="card"><img src="IMG_2026.JPEG"></div>
-  <div class="card"><img src="IMG_2078.jpg"></div>
-  <div class="card"><img src="IMG_2277 2.jpg"></div>
-  <div class="card"><img src="IMG_2277.jpg"></div>
-  <div class="card"><img src="IMG_2536.JPEG"></div>
-  <div class="card"><img src="IMG_2621.JPEG"></div>
-  <div class="card"><img src="IMG_2675.JPG"></div>
-  <div class="card"><img src="IMG_2724.JPG"></div>
-  <div class="card"><img src="IMG_4057.jpg"></div>
-  <div class="card"><img src="IMG_4222.JPG"></div>
-  <div class="card"><img src="IMG_6539.jpg"></div>
-  <div class="card"><img src="Jungle'Cleet06.JPG"></div>
-  <div class="card"><img src="P1000007.JPG"></div>
-  <div class="card"><img src="P1000086.JPG"></div>
-  <div class="card"><img src="P1000098.JPG"></div>
-  <div class="card"><img src="P1000170.JPG"></div>
-  <div class="card"><img src="P1000195.JPG"></div>
-  <div class="card"><img src="P1010086.JPG"></div>
-  <div class="card"><img src="110_0603.JPG"></div>
-  <div class="card"><img src="B35B75C4-4BA4-434F-A6BB-1DCBAD0984D0.JPG"></div>
-  <div class="card"><img src="Chelsea Flower Show'04 009.JPG"></div>
-  <div class="card"><img src="DSCF2287.JPEG"></div>
-  <div class="card"><img src="DSCF5912.JPEG"></div>
-  <div class="card"><img src="DSCF6353.jpg"></div>
-  <div class="card"><img src="DSCF6786.JPEG"></div>
-  <div class="card"><img src="DSCF6866.JPEG"></div>
-  <div class="card"><img src="DSCF6977.JPEG"></div>
-  <div class="card"><img src="DSCF7290.JPEG"></div>
-  <div class="card"><img src="P1010411.JPG"></div>
-  <div class="card"><img src="P1010519.JPG"></div>
-  <div class="card"><img src="P1010526.JPG"></div>
-  <div class="card"><img src="P1010530.JPEG"></div>
-  <div class="card"><img src="P1010546.JPEG"></div>
-  <div class="card"><img src="P7260885.JPEG"></div>
+<img src="IMG_4222.JPG">
+<img src="P1000170.JPG">
 </div>
-
-<div id="viewer" onclick="this.style.display='none'">
-  <img src="">
-</div>
-
-<script>
-document.querySelectorAll('.gallery img, .card img').forEach(img => {
-  img.onclick = () => {
-    document.querySelector('#viewer img').src = img.src;
-    document.getElementById('viewer').style.display='flex';
-  };
-});
-</script>
 
 </body>
 </html>
