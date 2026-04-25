@@ -17,7 +17,7 @@
       overflow-x: hidden;
     }
 
-    /* NAV (fluid) */
+    /* NAV */
     nav {
       position: fixed;
       top: clamp(15px, 3vw, 20px);
@@ -36,13 +36,14 @@
     nav a {
       color: #1a1a1a;
       text-decoration: none;
-      font-size: clamp(18px, 5vw, 48px); /* MATCH OTHER PAGES */
+      font-size: clamp(18px, 5vw, 48px);
       font-weight: 300;
-      transition: filter 0.3s;
+      opacity: 0.9;
+      transition: opacity 0.25s ease;
     }
 
     nav a:hover {
-      filter: blur(1px);
+      opacity: 0.5;
     }
 
     /* NVC */
@@ -52,7 +53,7 @@
       left: clamp(15px, 3vw, 20px);
       color: #1a1a1a;
       text-decoration: none;
-      font-size: clamp(14px, 4vw, 32px); /* MATCH OTHER PAGES */
+      font-size: clamp(14px, 4vw, 32px);
       letter-spacing: 2px;
       opacity: 0.6;
       z-index: 10;
@@ -82,11 +83,23 @@
     a.link {
       color: #000;
       text-decoration: none;
-      transition: filter 0.3s;
+      opacity: 0.9;
+      transition: opacity 0.25s ease;
     }
 
     a.link:hover {
-      filter: blur(1px);
+      opacity: 0.5;
+    }
+
+    /* DESKTOP ONLY (matches all other pages) */
+    @media (min-width: 600px) {
+      nav a {
+        font-size: 30px;
+      }
+
+      .return-arrow {
+        font-size: 14px;
+      }
     }
 
   </style>
@@ -100,7 +113,6 @@
   <ul>
     <li><a href="photos.html">Photos</a></li>
     <li><a href="videos.html">Videos</a></li>
-    <li><a href="music.html">Music</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
 </nav>
