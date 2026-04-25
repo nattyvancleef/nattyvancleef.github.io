@@ -11,40 +11,35 @@
     body {
       margin: 0;
       font-family: 'Helvetica Neue', Arial, sans-serif;
-      background: #f7f6f4;
       overflow-x: hidden;
     }
 
     nav {
       position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 10;
+      top: clamp(15px, 3vw, 20px);
+      right: clamp(15px, 3vw, 20px);
     }
 
     nav ul {
       display: flex;
-      gap: 30px;
+      gap: clamp(12px, 3vw, 30px);
       list-style: none;
-      margin: 0;
-      padding: 0;
     }
 
     nav a {
+      font-size: clamp(18px, 5vw, 48px);
       color: #fff;
       text-decoration: none;
-      font-size: 24px;
-      font-weight: 300;
     }
 
     .return-arrow {
       position: fixed;
-      top: 20px;
-      left: 20px;
+      top: clamp(15px, 3vw, 20px);
+      left: clamp(15px, 3vw, 20px);
+      font-size: clamp(14px, 4vw, 32px);
       color: #fff;
-      font-size: 14px;
-      letter-spacing: 2px;
       opacity: 0.6;
+      letter-spacing: 2px;
     }
 
     .hero-background {
@@ -74,27 +69,9 @@
     }
 
     h1 {
-      font-size: 4em;
+      font-size: clamp(2em, 8vw, 4em);
       color: #fff;
     }
-
-    /* LANDSCAPE MOBILE */
-    @media (max-width: 900px) and (orientation: landscape){
-      nav a { font-size: 48px; }
-      .return-arrow { font-size: 32px; }
-    }
-
-    /* PORTRAIT MOBILE */
-    @media (max-width: 600px) and (orientation: portrait){
-      nav { top:15px; right:15px; }
-      nav ul { gap:16px; }
-
-      nav a { font-size: 32px; }
-      .return-arrow { font-size: 22px; }
-
-      h1 { font-size: 2.4em; padding:0 10px; }
-    }
-
   </style>
 </head>
 
