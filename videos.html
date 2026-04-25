@@ -1,99 +1,114 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Videos - nattyvancleef</title>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Videos - nattyvancleef</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300&display=swap');
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300&display=swap');
 
-body {
-  margin:0;
-  font-family:'Helvetica Neue', Arial, sans-serif;
-  background:#000;
-  overflow-x:hidden;
-}
+    body {
+      margin: 0;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background: #000;
+      overflow-x: hidden;
+    }
 
-/* NAV (fluid) */
-nav {
-  position:fixed;
-  top:clamp(15px,3vw,20px);
-  right:clamp(15px,3vw,20px);
-  z-index:10;
-}
-nav ul {
-  display:flex;
-  gap:clamp(12px,3vw,30px);
-}
-nav a {
-  color:#fff;
-  text-decoration:none;
-  font-size:clamp(18px,5vw,48px);
-}
+    /* NAV */
+    nav {
+      position: fixed;
+      top: clamp(15px, 3vw, 20px);
+      right: clamp(15px, 3vw, 20px);
+      z-index: 10;
+    }
 
-/* NVC */
-.return-arrow {
-  position:fixed;
-  top:clamp(15px,3vw,20px);
-  left:clamp(15px,3vw,20px);
-  font-size:clamp(14px,4vw,32px);
-  color:#fff;
-  opacity:0.6;
-  letter-spacing:2px;
-}
+    nav ul {
+      display: flex;
+      gap: clamp(12px, 3vw, 30px);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
 
-/* BACKGROUND */
-.hero-background {
-  position:fixed;
-  inset:0;
-  z-index:-2;
-}
-.hero-background video {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: clamp(18px, 5vw, 48px);
+      font-weight: 300;
+      transition: filter 0.3s;
+    }
 
-.hero-overlay {
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.25);
-  z-index:-1;
-}
+    nav a:hover {
+      filter: blur(1px);
+    }
 
-/* CONTENT */
-.content {
-  position:relative;
-  height:200vh;
-}
+    /* NVC */
+    .return-arrow {
+      position: fixed;
+      top: clamp(15px, 3vw, 20px);
+      left: clamp(15px, 3vw, 20px);
+      color: #fff;
+      text-decoration: none;
+      font-size: clamp(14px, 4vw, 32px);
+      letter-spacing: 2px;
+      z-index: 10;
+      opacity: 0.6;
+    }
 
-/* WINDOWS */
-.window {
-  position:absolute;
-  width:clamp(180px, 40vw, 260px);
-  background:#000;
-  border:1px solid rgba(255,255,255,0.1);
-  box-shadow:0 10px 30px rgba(0,0,0,0.5);
-  cursor:pointer;
-  z-index:5;
-  transition:transform 0.5s ease, left 0.5s ease, top 0.5s ease;
-}
+    /* BACKGROUND */
+    .hero-background {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+    }
 
-.window:hover {
-  transform:scale(1.03);
-}
+    .hero-background video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-.window.focused {
-  z-index:20;
-  transform:scale(1.4);
-}
+    .hero-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.25);
+      z-index: -1;
+    }
 
-.video-box video {
-  width:100%;
-  display:block;
-}
-</style>
+    /* CONTENT */
+    .content {
+      position: relative;
+      height: 200vh;
+    }
+
+    /* WINDOWS */
+    .window {
+      position: absolute;
+      width: clamp(160px, 38vw, 260px);
+      background: #000;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      cursor: pointer;
+      z-index: 5;
+      transition: transform 0.4s ease, left 0.4s ease, top 0.4s ease;
+    }
+
+    .window:hover {
+      transform: scale(1.03);
+    }
+
+    .window.focused {
+      z-index: 20;
+      transform: scale(1.4);
+    }
+
+    .video-box video {
+      width: 100%;
+      display: block;
+    }
+
+  </style>
 </head>
 
 <body>
@@ -101,18 +116,18 @@ nav a {
 <a href="index.html" class="return-arrow">NVC</a>
 
 <nav>
-<ul>
-<li><a href="photos.html">Photos</a></li>
-<li><a href="videos.html">Videos</a></li>
-<li><a href="music.html">Music</a></li>
-<li><a href="contact.html">Contact</a></li>
-</ul>
+  <ul>
+    <li><a href="photos.html">Photos</a></li>
+    <li><a href="videos.html">Videos</a></li>
+    <li><a href="music.html">Music</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
 </nav>
 
 <div class="hero-background">
-<video autoplay muted loop playsinline>
-<source src="waterbabiesnvc.mp4">
-</video>
+  <video autoplay muted loop playsinline>
+    <source src="waterbabiesnvc.mp4" type="video/mp4">
+  </video>
 </div>
 
 <div class="hero-overlay"></div>
@@ -138,22 +153,33 @@ const videos = [
 ];
 
 const content = document.getElementById("content");
+const placed = [];
 const windows = [];
 
-const winWidth = () => Math.min(Math.max(window.innerWidth * 0.4, 180), 260);
-const winHeight = () => winWidth() * 0.7;
+const winW = () => Math.min(Math.max(window.innerWidth * 0.38, 160), 260);
+const winH = () => winW() * 0.7;
+
+function isOverlapping(x, y) {
+  return placed.some(p => {
+    return !(
+      x + winW() < p.x ||
+      x > p.x + winW() ||
+      y + winH() < p.y ||
+      y > p.y + winH()
+    );
+  });
+}
 
 videos.forEach((src, i) => {
   const win = document.createElement("div");
   win.className = "window";
 
-  // GRID-BASED POSITIONING (better than random chaos)
-  const cols = Math.floor(window.innerWidth / (winWidth() + 20));
+  const cols = Math.max(1, Math.floor(window.innerWidth / (winW() + 20)));
   const col = i % cols;
   const row = Math.floor(i / cols);
 
-  const x = col * (winWidth() + 20) + 20;
-  const y = row * (winHeight() + 40) + 100;
+  const x = col * (winW() + 20) + 20;
+  const y = row * (winH() + 40) + 100;
 
   win.dataset.x = x;
   win.dataset.y = y;
@@ -164,7 +190,7 @@ videos.forEach((src, i) => {
   win.innerHTML = `
     <div class="video-box">
       <video muted autoplay loop playsinline>
-        <source src="${src}">
+        <source src="${src}" type="video/mp4">
       </video>
     </div>
   `;
@@ -178,24 +204,25 @@ videos.forEach((src, i) => {
   content.appendChild(win);
 });
 
-function focusWindow(target){
-  const centerX = window.innerWidth/2 - winWidth()/2;
-  const centerY = window.innerHeight/2 - winHeight()/2;
+function focusWindow(target) {
+  const centerX = window.innerWidth / 2 - winW() / 2;
+  const centerY = window.innerHeight / 2 - winH() / 2;
 
-  windows.forEach(win=>{
+  windows.forEach(win => {
     const video = win.querySelector("video");
     win.classList.remove("focused");
 
     let x = parseFloat(win.dataset.x);
     let y = parseFloat(win.dataset.y);
 
-    if(win === target){
-      win.style.left = centerX+"px";
-      win.style.top = centerY+"px";
+    if (win === target) {
+      win.style.left = centerX + "px";
+      win.style.top = centerY + "px";
       win.classList.add("focused");
 
       video.muted = false;
       video.play();
+
     } else {
       video.muted = true;
 
@@ -203,15 +230,15 @@ function focusWindow(target){
       const dy = y - target.dataset.y;
       const dist = Math.sqrt(dx*dx + dy*dy);
 
-      if(dist < 300){
+      if (dist < 300) {
         const push = 60;
-        const angle = Math.atan2(dy,dx);
-        x += Math.cos(angle)*push;
-        y += Math.sin(angle)*push;
+        const angle = Math.atan2(dy, dx);
+        x += Math.cos(angle) * push;
+        y += Math.sin(angle) * push;
       }
 
-      win.style.left = x+"px";
-      win.style.top = y+"px";
+      win.style.left = x + "px";
+      win.style.top = y + "px";
     }
   });
 }
