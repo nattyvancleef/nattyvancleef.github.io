@@ -3,6 +3,7 @@
 <head>
   <title>Contact - nattyvancleef</title>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300&display=swap');
@@ -11,31 +12,31 @@
       margin: 0;
       font-family: 'Helvetica Neue', Arial, sans-serif;
       font-weight: 300;
-      background: #f7f6f4; /* KEEPING your original background */
+      background: #f7f6f4;
       color: #1a1a1a;
       overflow-x: hidden;
     }
 
-    /* NAV (same as music page) */
+    /* NAV (fluid) */
     nav {
       position: fixed;
-      top: 20px;
-      right: 20px;
+      top: clamp(15px, 3vw, 20px);
+      right: clamp(15px, 3vw, 20px);
       z-index: 10;
     }
 
     nav ul {
       display: flex;
-      gap: 30px;
+      gap: clamp(12px, 3vw, 30px);
       list-style: none;
       margin: 0;
       padding: 0;
     }
 
     nav a {
-      color: #1a1a1a; /* adjusted for light background */
+      color: #1a1a1a;
       text-decoration: none;
-      font-size: 24px;
+      font-size: clamp(18px, 5vw, 48px); /* MATCH OTHER PAGES */
       font-weight: 300;
       transition: filter 0.3s;
     }
@@ -44,27 +45,29 @@
       filter: blur(1px);
     }
 
-    /* NVC (top left, same style as music page) */
+    /* NVC */
     .return-arrow {
       position: fixed;
-      top: 20px;
-      left: 20px;
+      top: clamp(15px, 3vw, 20px);
+      left: clamp(15px, 3vw, 20px);
       color: #1a1a1a;
       text-decoration: none;
-      font-size: 14px;
+      font-size: clamp(14px, 4vw, 32px); /* MATCH OTHER PAGES */
       letter-spacing: 2px;
+      opacity: 0.6;
       z-index: 10;
     }
 
+    /* CONTENT */
     section {
-      padding: 120px 20px;
+      padding: clamp(100px, 12vw, 140px) 20px;
       max-width: 700px;
       margin: auto;
       text-align: center;
     }
 
     h2 {
-      font-size: 24px;
+      font-size: clamp(20px, 4vw, 28px);
       font-weight: 300;
       letter-spacing: 1px;
     }
@@ -72,7 +75,8 @@
     p {
       color: rgba(0,0,0,0.6);
       margin: 15px 0;
-      font-size: 14px;
+      font-size: clamp(14px, 3.5vw, 16px);
+      line-height: 1.5;
     }
 
     a.link {
@@ -83,10 +87,6 @@
 
     a.link:hover {
       filter: blur(1px);
-    }
-
-    @media (max-width:600px){
-      nav a { font-size:18px; }
     }
 
   </style>
