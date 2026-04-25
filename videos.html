@@ -108,6 +108,17 @@
       display: block;
     }
 
+    /* DESKTOP ONLY (matches other pages) */
+    @media (min-width: 600px) {
+      nav a {
+        font-size: 30px;
+      }
+
+      .return-arrow {
+        font-size: 14px;
+      }
+    }
+
   </style>
 </head>
 
@@ -119,7 +130,6 @@
   <ul>
     <li><a href="photos.html">Photos</a></li>
     <li><a href="videos.html">Videos</a></li>
-    <li><a href="music.html">Music</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
 </nav>
@@ -158,17 +168,6 @@ const windows = [];
 
 const winW = () => Math.min(Math.max(window.innerWidth * 0.38, 160), 260);
 const winH = () => winW() * 0.7;
-
-function isOverlapping(x, y) {
-  return placed.some(p => {
-    return !(
-      x + winW() < p.x ||
-      x > p.x + winW() ||
-      y + winH() < p.y ||
-      y > p.y + winH()
-    );
-  });
-}
 
 videos.forEach((src, i) => {
   const win = document.createElement("div");
